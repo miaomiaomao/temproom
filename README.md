@@ -7,4 +7,4 @@ SE project
 
 网络部分优化中
 
-使用方法：下载所有py文件到同一个文件夹中，运行w1.py即可。程序需要pyqt5,pyaudio,socket,urllib几个模块的支持
+使用方法：下载所有py文件到同一个文件夹中，运行w1.py即可。程序需要pyqt5,pyaudio,socket,urllib，pymysql几个模块的支持，但由于没有固定IP的数据库服务器，数据库在我电脑上，故目前程序无法运行。
