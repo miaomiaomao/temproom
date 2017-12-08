@@ -6,7 +6,7 @@ CHUNK = 1024
 
 
 
-wf = wave.open('1.wav', 'rb')
+wf = wave.open('2.wav', 'rb')
 
 p = pyaudio.PyAudio()
 

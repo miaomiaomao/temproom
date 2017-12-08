@@ -6,139 +6,229 @@ Created on Sat Dec  2 18:41:35 2017
 """
 
 import pymysql
-import pandas as pd
-import datetime
 import random
- 
-conn=pymysql.connect(host='localhost',user='root',passwd='960115',db='temproomdata',port=3306)
-cur=conn.cursor()
 
-#%%判断是否新用户
-while(1):
-    decision = input('是否选择注册新用户，请输入y/n:')
-    if decision != 'y' and decision != 'n':
-        print('输入无效，请重新输入！')
-    else:
-        break
 
-#新用户注册
-if decision=='y':
-    while(1):
-        username = input('请输入用户名:')
-        if len(username)>30:
-            print('用户名过长，请重新输入！')
-            continue
+def ini():
+    conn=pymysql.connect(host='localhost',user='root',passwd='123',db='temproomdata')
+    cur = conn.cursor()
+    return cur,conn
+
+
+def search_username(username,cur):
+        # username = input('请输入用户名:')
+        # if len(username)>30:
+        #     print('用户名过长，请重新输入！')
+        #     continue
         sql = "select * from users where username = '" + username + "'"
         cur.execute(sql)
-        if cur.rowcount!=0:
-            print('该用户名已被注册！')
-            continue
-        break
-    while(1):
-        password = input('请输入密码(区分大小写)：')
-        if len(password)>30:
-            print('密码过长，请重新输入！')
-            continue
-        break
-    sex = input('请勾选性别：')
+        return cur.rowcount
+
+
+
+
+def signin(username,password,cur):
+    if search_username(username,cur)==1:
+        # data = pd.DataFrame(list(cur.fetchall()))
+        # cursor_des = pd.DataFrame(list(cur.description))
+        # data.columns = list(cursor_des[0])
+        results = cur.fetchall()
+        # print(results[0])
+        if password == results[0][1]:
+            return 0
+        else:
+            return 1
+    else:
+        return 2
+
+
+def signup(username,password,cur,conn):
+    # while(1):
+    #     password = input('请输入密码(区分大小写)：')
+    #     if len(password)>30:
+    #         print('密码过长，请重新输入！')
+    #         continue
+    #     break
+    # sex = input('请勾选性别：')
+    #
+    # while(1):
+    #     nickname = input('请输入昵称：')
+    #     if len(password)>30:
+    #         print('昵称过长，请重新输入！')
+    #         continue
+    #     break
     
-    while(1):
-        nickname = input('请输入昵称：')
-        if len(password)>30:
-            print('昵称过长，请重新输入！')
-            continue
-        break
-    
-    today = datetime.datetime.now().strftime("%Y-%m-%d")
+    # today = datetime.datetime.now().strftime("%Y-%m-%d")
     sql = """insert into users
-	values('%s','%s','%s','%s','%s',%d)"""
-    cur.execute(sql % (username,password,sex,nickname,today,0))
+	values('%s','%s',%d)"""
+    cur.execute(sql % (username,password,0))
     conn.commit()
 
-#老用户登陆
-if decision=='n':
-    while(1):
-        username = input('请输入用户名：')
-        sql = "select * from users where username = '" + username + "'"
-        cur.execute(sql)
-        if cur.rowcount==0:
-            print('该用户不存在！')
-            continue
-        data = pd.DataFrame(list(cur.fetchall()))
-        cursor_des = pd.DataFrame(list(cur.description))
-        data.columns = list(cursor_des[0])
-        break
-    
-    while(1):
-        password = input('请输入密码：')
-        if password != data['password'][0]:
-            print('密码错误！')
-            continue
-        break
+
 
 #%%判断创建新房间还是进入已有房间
 #创建房间
-while(1):
-    roomnumber = str(random.randint(1000, 9999))
-    sql = "select * from rooms where roomnumber = " + roomnumber
+# while(1):
+#     roomnumber = str(random.randint(1000, 9999))
+
+def search_room(roomnumber,cur):
+    sql = "select * from rooms where roomnumber = '%d'"
+    cur.execute(sql% roomnumber)
+    return cur.rowcount
+
+
+
+
+
+def numberofrooms(cur):
+    sql = "select * from rooms "
     cur.execute(sql)
-    if cur.rowcount!=0:
-        continue
-    
+    return cur.rowcount
+
+def numberofusers(cur):
+    sql = "select * from rooms "
+    cur.execute(sql)
+    results = cur.fetchall()
+    total=0
+    for i in range(cur.rowcount):
+        total+=results[i][2]
+    return total
+
+def newroom(roomnumber,keyintoroom,roomowner,cur,conn):
     sql = """insert into rooms
-	values(%d,%d)"""
-    cur.execute(sql % (int(roomnumber),1))
+	values(%d,%d,%d)"""
+    cur.execute(sql % (int(roomnumber),keyintoroom,1))
     conn.commit()
-    
+
     sql = """update users
 	set currentroom = %d
 	where username='%s'"""
-    cur.execute(sql % (int(roomnumber),username))
+    cur.execute(sql % (int(roomnumber),roomowner))
     conn.commit()
-    break
 
-#进入已有房间
-while(1):
-    roomnumber = input('请输入房间号：')
-    sql = "select * from rooms where roomnumber = " + roomnumber
+
+    # s = "insert into " + table_name;
+    # sql = "" + s + "(id,fid,content)values(null,'" + f_id
+    # + "','" + new_content + "')"
+
+
+
+    sql="create table if not exists room%s" %str(roomnumber)+ """(
+    id  int(1)  auto_increment PRIMARY key,
+    status  int  not null,
+    username  VARCHAR(30))"""
     cur.execute(sql)
-    if cur.rowcount==0:
-        print('该房间不存在！请重新确认房间号码。')
-        continue
-    print('进入房间成功！')
-    
-    sql = """update rooms
-	set numberofusers = numberofusers+1
-	where roomnumber = %d"""
-    cur.execute(sql % (int(roomnumber)))
     conn.commit()
-    
-    sql = """update users
-	set currentroom = %d
-	where username='%s'"""
-    cur.execute(sql % (int(roomnumber),username))
+
+    sql ="insert into room%s"%str(roomnumber)+"(status,username) values(%d,'%s')"
+    cur.execute(sql % (1,roomowner))
     conn.commit()
-    break
-#%%退出房间
-sql = """update rooms
-	set numberofusers = numberofusers-1
-	where roomnumber = %d"""
-cur.execute(sql % (int(roomnumber)))
-conn.commit()
 
-sql = """update users
-	set currentroom = %d
-	where username='%s'"""
-cur.execute(sql % (0,username))
-conn.commit()
+def curretroomusers(roomnumber,cur):
+    sql = "select * from room%s" % str(roomnumber)
+    cur.execute(sql)
 
+    results = cur.fetchall()
+
+    return results
+
+def curretroomusernumber(roomnumber,cur):
+    sql = "select * from room%s" % str(roomnumber)
+    cur.execute(sql)
 
 
-#username = 'han'
+    return cur.rowcount
+def getinroom(username,roomnumber,keyintoroom,cur,conn):
+    # sql = "select * from rooms where roomnumber =' " + roomnumber+"'"
+    # cur.execute(sql)
+    if search_room(roomnumber,cur)==1:
+        results=cur.fetchall()
 
-'''
-sql = """delete from users
-	where username='id'"""
-cur.execute(sql)
-conn.commit()
-'''
+        if keyintoroom== results[0][1]:
+            sql = """update rooms
+	        set numberofusers = numberofusers+1
+	        where roomnumber = %d"""
+            cur.execute(sql % (int(roomnumber)))
+            conn.commit()
+
+            sql = """update users
+	        set currentroom = %d
+	        where username='%s'"""
+            cur.execute(sql % (int(roomnumber),username))
+            conn.commit()
+
+            sql = "insert into room%s" % str(roomnumber)+"(status,username) values(%d,'%s')"
+            cur.execute(sql % (1, username))
+            conn.commit()
+
+            return 0
+        else:
+            return 1
+    else:
+        return 2
+
+def useroffline(username,roomnumber, cur, conn,):
+    if search_room(roomnumber,cur)==1:
+        results=cur.fetchall()
+        if results[0][2]>0:
+            sql = """update rooms
+	        set numberofusers = numberofusers-1
+	        where roomnumber = %d"""
+            cur.execute(sql % (int(roomnumber)))
+            conn.commit()
+        else:
+            sql = """update rooms
+            set numberofusers = 0
+            where roomnumber = %d"""
+            cur.execute(sql % (int(roomnumber)))
+            conn.commit()
+
+
+        sql = """update users
+        set currentroom = %d
+        where username='%s'"""
+        cur.execute(sql % (0, username))
+        conn.commit()
+
+        sql = "delete from room%s" % str(roomnumber) + " where username='%s' "%username
+        # '" + username + "'"
+        #print(sql)
+        cur.execute(sql)
+        conn.commit()
+
+
+
+def roomoffline(roomnumber,cur,conn):
+    if search_room(roomnumber,cur)==1:
+        results=cur.fetchall()
+        if results[0][2]==0:
+            sql = """delete from rooms
+            where roomnumber=%d"""
+            cur.execute(sql%(int(roomnumber)))
+            conn.commit()
+
+            sql = "drop table room%s"% str(roomnumber)
+            #print(sql)
+            cur.execute(sql)
+            conn.commit()
+        else:
+            pass
+
+    else:
+        sql = "drop table room%s" % str(roomnumber)
+        print(sql)
+        # cur.execute(sql)
+        conn.commit()
+        print('wrong')
+
+if __name__=='__main__':
+    cur,conn=ini()
+    #signup('anyone4','anyone4',cur,conn)
+    #print(signin('hechao','123',cur))
+    #newroom(16,2,'hechao',cur,conn)
+    #print(search_room(121,cur))
+    getinroom('anyone4',15,2,cur,conn)
+    #useroffline('hechao',16,cur,conn)
+    #roomoffline(16,cur,conn)
+    #search_room(15,cur)
+    conn.close()
