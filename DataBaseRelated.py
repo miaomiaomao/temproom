@@ -10,7 +10,7 @@ import random
 
 
 def ini():
-    conn=pymysql.connect(host='localhost',user='root',passwd='123',db='temproomdata')
+    conn=pymysql.connect(host='120.79.72.9',user='root',passwd='123',db='temproom',unix_socket="/var/run/mysqld/mysqld.sock")
     cur = conn.cursor()
     return cur,conn
 
@@ -20,7 +20,7 @@ def search_username(username,cur):
         # if len(username)>30:
         #     print('用户名过长，请重新输入！')
         #     continue
-        sql = "select * from users where username = '" + username + "'"
+        sql = "select * from Users where username = '" + username + "'"
         cur.execute(sql)
         return cur.rowcount
 
@@ -57,9 +57,9 @@ def signup(username,password,cur,conn):
     #         print('昵称过长，请重新输入！')
     #         continue
     #     break
-    
+
     # today = datetime.datetime.now().strftime("%Y-%m-%d")
-    sql = """insert into users
+    sql = """insert into Users
 	values('%s','%s',%d)"""
     cur.execute(sql % (username,password,0))
     conn.commit()
@@ -72,21 +72,29 @@ def signup(username,password,cur,conn):
 #     roomnumber = str(random.randint(1000, 9999))
 
 def search_room(roomnumber,cur):
-    sql = "select * from rooms where roomnumber = '%d'"
+    sql = "select * from Rooms where roomnumber = '%d'"
     cur.execute(sql% roomnumber)
     return cur.rowcount
 
+def return_roomnumberlist(cur):
+    sql = "select * from Rooms "
+    cur.execute(sql)
+    results = cur.fetchall()
+    numberlist=[]
+    for i in range(cur.rowcount):
+        numberlist.append(results[i][0])
 
+    return numberlist
 
 
 
 def numberofrooms(cur):
-    sql = "select * from rooms "
+    sql = "select * from Rooms "
     cur.execute(sql)
     return cur.rowcount
 
 def numberofusers(cur):
-    sql = "select * from rooms "
+    sql = "select * from Rooms "
     cur.execute(sql)
     results = cur.fetchall()
     total=0
@@ -95,12 +103,12 @@ def numberofusers(cur):
     return total
 
 def newroom(roomnumber,keyintoroom,roomowner,cur,conn):
-    sql = """insert into rooms
+    sql = """insert into Rooms
 	values(%d,%d,%d)"""
     cur.execute(sql % (int(roomnumber),keyintoroom,1))
     conn.commit()
 
-    sql = """update users
+    sql = """update Users
 	set currentroom = %d
 	where username='%s'"""
     cur.execute(sql % (int(roomnumber),roomowner))
@@ -133,11 +141,12 @@ def curretroomusers(roomnumber,cur):
     return results
 
 def curretroomusernumber(roomnumber,cur):
-    sql = "select * from room%s" % str(roomnumber)
-    cur.execute(sql)
+    sql = "select * from Rooms where roomnumber = '%d'"
+    cur.execute(sql% roomnumber)
+    results=cur.fetchall()
+    return results[0][2]
 
 
-    return cur.rowcount
 def getinroom(username,roomnumber,keyintoroom,cur,conn):
     # sql = "select * from rooms where roomnumber =' " + roomnumber+"'"
     # cur.execute(sql)
@@ -145,13 +154,13 @@ def getinroom(username,roomnumber,keyintoroom,cur,conn):
         results=cur.fetchall()
 
         if keyintoroom== results[0][1]:
-            sql = """update rooms
+            sql = """update Rooms
 	        set numberofusers = numberofusers+1
 	        where roomnumber = %d"""
             cur.execute(sql % (int(roomnumber)))
             conn.commit()
 
-            sql = """update users
+            sql = """update Users
 	        set currentroom = %d
 	        where username='%s'"""
             cur.execute(sql % (int(roomnumber),username))
@@ -167,24 +176,24 @@ def getinroom(username,roomnumber,keyintoroom,cur,conn):
     else:
         return 2
 
-def useroffline(username,roomnumber, cur, conn,):
+def useroffline(username,roomnumber, cur, conn):
     if search_room(roomnumber,cur)==1:
         results=cur.fetchall()
         if results[0][2]>0:
-            sql = """update rooms
+            sql = """update Rooms
 	        set numberofusers = numberofusers-1
 	        where roomnumber = %d"""
             cur.execute(sql % (int(roomnumber)))
             conn.commit()
         else:
-            sql = """update rooms
+            sql = """update Rooms
             set numberofusers = 0
             where roomnumber = %d"""
             cur.execute(sql % (int(roomnumber)))
             conn.commit()
 
 
-        sql = """update users
+        sql = """update Users
         set currentroom = %d
         where username='%s'"""
         cur.execute(sql % (0, username))
@@ -202,7 +211,7 @@ def roomoffline(roomnumber,cur,conn):
     if search_room(roomnumber,cur)==1:
         results=cur.fetchall()
         if results[0][2]==0:
-            sql = """delete from rooms
+            sql = """delete from Rooms
             where roomnumber=%d"""
             cur.execute(sql%(int(roomnumber)))
             conn.commit()
@@ -215,11 +224,12 @@ def roomoffline(roomnumber,cur,conn):
             pass
 
     else:
-        sql = "drop table room%s" % str(roomnumber)
-        print(sql)
-        # cur.execute(sql)
-        conn.commit()
-        print('wrong')
+        pass
+        # sql = "drop table room%s" % str(roomnumber)
+        # print(sql)
+        # # cur.execute(sql)
+        # conn.commit()
+        # print('wrong')
 
 if __name__=='__main__':
     cur,conn=ini()
@@ -227,8 +237,8 @@ if __name__=='__main__':
     #print(signin('hechao','123',cur))
     #newroom(16,2,'hechao',cur,conn)
     #print(search_room(121,cur))
-    getinroom('anyone4',15,2,cur,conn)
-    #useroffline('hechao',16,cur,conn)
+    #getinroom('anyone4',15,2,cur,conn)
+    useroffline('anyone',1333,cur,conn)
     #roomoffline(16,cur,conn)
     #search_room(15,cur)
     conn.close()

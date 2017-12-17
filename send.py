@@ -15,16 +15,17 @@ import sys
 def client_connect():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect(('127.0.0.1', 6666))
+        s.connect(('183.173.51.156', 6667))
     except socket.error as msg:
         print (msg)
         sys.exit(1)
+    return s
+    #
+    # print (bytes.decode(s.recv(1024)))
 
-    print (bytes.decode(s.recv(1024)))
-
-def send(s):
+def send(s,username):
     while 1:
-        filepath = '1.wav'
+        filepath = username+'.wav'
         if os.path.isfile(filepath):
             # 定义定义文件信息。
             fileinfo_size = os.path.getsize(filepath)
@@ -32,7 +33,7 @@ def send(s):
             # 定义文件头信息，包含文件名和文件大小
             #fhead = struct.pack('128sl', os.path.basename(filepath),os.stat(filepath).st_size)
             s.send(str.encode(str(fileinfo_size)))
-            
+            s.send(str.encode(username))
 
             fp = open(filepath, 'rb')
             while 1:
@@ -46,12 +47,12 @@ def send(s):
 
 def recv(s):
     buf = bytes.decode(s.recv(1024))
-
+    username = bytes.decode(s.recv(1024))
     filesize = int(buf)
     if buf:
         print('filesize is {0}'.format(buf))
         recvd_size = 0  # 定义已接收文件的大小
-        fp = open('2.wav', 'wb')
+        fp = open(username+'.wav', 'wb')
         print('start receiving...')
 
         while not recvd_size == filesize:
@@ -67,5 +68,5 @@ def recv(s):
 
 
 
-if __name__ == '__main__':
-    # socket_client()
+# if __name__ == '__main__':
+#     # socket_client()

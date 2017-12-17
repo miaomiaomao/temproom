@@ -11,4 +11,4 @@ def getip():
   
   
 if __name__ == '__main__':  
-    getip()  
+    print(getip())

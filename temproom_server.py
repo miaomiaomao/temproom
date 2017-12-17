@@ -5,11 +5,13 @@
 file: temproom_server.py
 """
 import sys
+import threading
 from PyQt5.QtWidgets import (QLabel, QCheckBox, QPushButton, QVBoxLayout,QHBoxLayout,
  QApplication, QWidget,QLineEdit,QMessageBox,QDesktopWidget,QFormLayout)
 from PyQt5.QtCore import QCoreApplication
 from ip import getip
-from DataBaseRelated import ini,numberofusers,numberofrooms
+import DataBaseRelated
+import recv
 
 class Window(QWidget):
 
@@ -21,19 +23,21 @@ class Window(QWidget):
     def init_ui(self):
         self.l1 = QLabel('房间数')
         self.l2 = QLabel('总在线人数')
-        cur, conn = ini()
-        status1 = numberofrooms(cur)
-        status2 = numberofusers(cur)
-        conn.close()
-        self.l3 = QLabel(str(status1))
-        self.l4 = QLabel(str(status2))
+        self.b=QPushButton('刷新')
+
+
+
+
+        self.l3 = QLabel('')
+        self.l4 = QLabel('')
+        self.refresh()
         self.l5 = QLabel('本机公网ip')
         self.l6 = QLabel(getip())
         # self.b1 = QPushButton('下线')
 
-        layout=QFormLayout()
-        layout.addRow(self.l1,self.l3)
-        layout.addRow(self.l2,self.l4)
+        # layout=QFormLayout()
+        # layout.addRow(self.l1,self.l3)
+        # layout.addRow(self.l2,self.l4)
         v_box = QVBoxLayout()
         h_box1 = QHBoxLayout()
         h_box2 = QHBoxLayout()
@@ -54,15 +58,32 @@ class Window(QWidget):
         h_box3.addStretch()
         v_box.addLayout(h_box3)
 
-        # v_box.addWidget(self.b1)
+        v_box.addWidget(self.b)
         self.setLayout(v_box)
         self.setWindowTitle('Temproom Server')
 
-        # self.b1.clicked.connect(self.btn1_clk)
+        self.b.clicked.connect(self.refresh)
 
-        self.resize(250,120)
+        self.resize(250,150)
         self.center()
-        self.show()   
+        self.show()
+
+
+    def refresh(self):
+        cur, conn = DataBaseRelated.ini()
+        status1 = DataBaseRelated.numberofrooms(cur)
+        status2 = DataBaseRelated.numberofusers(cur)
+        self.l3.setText(str(status1))
+        self.l4.setText(str(status2))
+        numberlist = DataBaseRelated.return_roomnumberlist(cur)
+        conn.close()
+        for i in numberlist:
+            number, c = recv.ready(i)
+            if number >= 3:
+                t = threading.Thread(target=recv.work, args=c)
+                t.start()
+
+
 
     def center(self):
 
