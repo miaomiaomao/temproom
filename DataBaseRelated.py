@@ -6,7 +6,7 @@ Created on Sat Dec  2 18:41:35 2017
 """
 
 import pymysql
-import random
+#
 
 
 def ini():

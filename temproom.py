@@ -6,20 +6,22 @@ file: main.py
 """
 from PyQt5.QtWidgets import (QApplication, QComboBox, QDialog,
         QDialogButtonBox, QFormLayout, QGridLayout, QGroupBox, QHBoxLayout,
-        QLabel, QLineEdit, QMenu, QMenuBar, QPushButton,QVBoxLayout, QDesktopWidget)
- 
-import sys,socket,ip
+        QLabel, QLineEdit, QMenu, QMenuBar, QPushButton,QVBoxLayout, QDesktopWidget,QMessageBox)
+
+import sys,socket
 import send,record,play,threading
 import DataBaseRelated
 
 class Dialog(QDialog):
     number=0
+    roomnumber=0
     userlist=[]
     user=[]
     username=''
+
     def __init__(self,username,roomnumber):
         super(Dialog, self).__init__()
-        
+
         self.l1 = QLabel('当前用户：')
         self.l2 = QLabel('房间号：')
         self.l3 = QLabel(str(username))
@@ -27,9 +29,9 @@ class Dialog(QDialog):
         self.b1 = QPushButton('上线')
         self.b2 = QPushButton('下线')
         self.b1.clicked.connect(self.connect)
-
-        # self.b2.clicked.connect(self.b2_click(username,roomnumber))
+        self.b2.clicked.connect(self.b2_click)
         self.username=username
+        self.roomnumber=roomnumber
         # 调整显示内容
         cur, conn = DataBaseRelated.ini()
         self.number = DataBaseRelated.curretroomusernumber(roomnumber,cur)
@@ -60,12 +62,12 @@ class Dialog(QDialog):
         # self.createFormGroupBox()
 
         v_box = QVBoxLayout()
-        
 
-        layout = QGridLayout()  
-        # layout.addWidget(self.l1,0,0) 
-        # layout.addWidget(self.l3,0,1) 
-        # layout.addWidget(self.l2,1,0) 
+
+        layout = QGridLayout()
+        # layout.addWidget(self.l1,0,0)
+        # layout.addWidget(self.l3,0,1)
+        # layout.addWidget(self.l2,1,0)
         # layout.addWidget(self.l4,1,1)
 
 
@@ -98,13 +100,27 @@ class Dialog(QDialog):
         self.hide()
 
     def connect(self):
-        so = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        so.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        so.bind((ip.getip(), 6666))
-        so.listen(1000)
-        conn, addr = so.accept()
-        t = threading.Thread(target=self.flow,args=conn)
-        t.start()
+        pass
+        # so = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # so.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        # so.bind((ip.getip(), 6666))
+        # so.listen(1000)
+        # conn, addr = so.accept()
+        # t = threading.Thread(target=self.flow,args=conn)
+        # t.start()
+
+    def closeEvent(self, event):
+        reply = QMessageBox.question(self, '确认', 'You sure to quit?',
+                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+        if reply == QMessageBox.Yes:
+            event.accept()
+            cur, conn = DataBaseRelated.ini()
+            DataBaseRelated.useroffline(self.username, self.roomnumber, cur, conn)
+            DataBaseRelated.roomoffline(self.roomnumber, cur, conn)
+            conn.close()
+        else:
+            event.ignore()
 
     def center(self):
         qr = self.frameGeometry()
@@ -112,10 +128,10 @@ class Dialog(QDialog):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    def b2_click(self,username, roomnumber):
+    def b2_click(self):
         cur, conn = DataBaseRelated.ini()
-        DataBaseRelated.useroffline(username, roomnumber, cur, conn)
-        DataBaseRelated.roomoffline(roomnumber, cur, conn)
+        DataBaseRelated.useroffline(self.username, self.roomnumber, cur, conn)
+        DataBaseRelated.roomoffline(self.roomnumber, cur, conn)
         conn.close()
     # def btn1_clk(self):
     #         pass

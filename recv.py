@@ -29,7 +29,7 @@ def server_connect(client_number, s):
     addr = []
     for i in range(client_number):
         try:
-            s[i].bind((getip(), 6666 + i))
+            s[i].bind('120.79.72.9', 6666))
             s[i].listen(100)
         except socket.error as msg:
             print(msg)

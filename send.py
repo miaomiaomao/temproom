@@ -15,7 +15,7 @@ import sys
 def client_connect():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect(('183.173.51.156', 6667))
+        s.connect(('120.79.72.9', 6666))
     except socket.error as msg:
         print (msg)
         sys.exit(1)

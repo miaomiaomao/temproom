@@ -55,6 +55,16 @@ class Window(QWidget):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
+    def closeEvent(self, event):
+        reply = QMessageBox.question(self, '确认', 'You sure to quit?',
+                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
+
+
     def btn1_clk(self):
         username=str(self.le1.text())
         password=str(self.le2.text())

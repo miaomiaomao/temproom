@@ -52,7 +52,7 @@ class Window(QWidget):
         h_box2.addWidget(self.l4)
         h_box2.addStretch()
         v_box.addLayout(h_box2)
-        
+
         h_box3.addWidget(self.l5)
         h_box3.addWidget(self.l6)
         h_box3.addStretch()
@@ -93,15 +93,15 @@ class Window(QWidget):
         self.move(qr.topLeft())
 
   #   def btn1_clk(self):
-        
+
   #       reply = QMessageBox.question(self, 'Message',
-		# "Are you sure to quit?", QMessageBox.Yes | 
+		# "Are you sure to quit?", QMessageBox.Yes |
 		# QMessageBox.No, QMessageBox.No)
 
   #       if reply == QMessageBox.Yes:
   #           event.accept()
   #       else:
-  #           event.ignore()       
+  #           event.ignore()
 
 
 if __name__=='__main__':
