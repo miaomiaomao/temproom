@@ -12,3 +12,6 @@ SE project
 
 
 上传了mysignal.py与changevoice.py两个文件，删除了ip.py文件
+
+
+现在点击上方退出程序按钮有提示啦！并且退出后数据库也会反应~
