@@ -88,11 +88,15 @@ class Window(QWidget):
         elif DataBaseRelated.getinroom(self.currentuser, roomnumber, keyintoroom, cur, conn)==1:
             buttonReply = QMessageBox.question(self, 'temproom', "房间密钥错误，请核对后输入", QMessageBox.Yes)
             if buttonReply == QMessageBox.Yes:
+                self.le1.clear()
+                self.le2.clear()
                 self.show()
 
         elif DataBaseRelated.getinroom(self.currentuser, roomnumber, keyintoroom, cur, conn) ==2:
             buttonReply = QMessageBox.question(self, 'temproom', "不存在此房间，请新建", QMessageBox.Yes)
             if buttonReply == QMessageBox.Yes:
+                self.le1.clear()
+                self.le2.clear()
                 self.show()
 
         conn.close()
@@ -124,6 +128,8 @@ class Window(QWidget):
             else:
                 buttonReply = QMessageBox.question(self, 'temproom', "房间已被占用，请重新建立", QMessageBox.Yes)
                 if buttonReply == QMessageBox.Yes:
+                    self.le1.clear()
+                    self.le2.clear()
                     self.show()
 
             conn.close()
