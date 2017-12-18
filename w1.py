@@ -7,6 +7,8 @@ file: w1.py
 import sys
 from PyQt5.QtWidgets import (QLabel, QCheckBox, QPushButton, QVBoxLayout,QHBoxLayout, QApplication,
     QWidget,QLineEdit,QMessageBox,QDesktopWidget,QFormLayout)
+import qdarkstyle
+# from PyQt5 import QtGui
 import DataBaseRelated,w2
 
 
@@ -40,6 +42,7 @@ class Window(QWidget):
 
         self.setLayout(v_box)
         self.setWindowTitle('用户登录')
+        self.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
 
         self.b1.clicked.connect(self.btn1_clk)
         self.b2.clicked.connect(self.btn2_clk)
@@ -85,7 +88,7 @@ class Window(QWidget):
         elif response==1:
             buttonReply = QMessageBox.question(self, 'temproom', "密码错误，请重新登录", QMessageBox.Yes)
             if buttonReply==QMessageBox.Yes:
-                self.le1.clear()
+
                 self.le2.clear()
                 self.show()
 

@@ -8,9 +8,10 @@ from PyQt5.QtWidgets import (QApplication, QComboBox, QDialog,
         QDialogButtonBox, QFormLayout, QGridLayout, QGroupBox, QHBoxLayout,
         QLabel, QLineEdit, QMenu, QMenuBar, QPushButton,QVBoxLayout, QDesktopWidget,QMessageBox)
 
-import sys,socket
+import sys
 import send,record,play,threading
 import DataBaseRelated
+import qdarkstyle
 
 class Dialog(QDialog):
     number=0
@@ -91,6 +92,7 @@ class Dialog(QDialog):
 
         self.setLayout(layout)
         self.setWindowTitle('Temproom')
+        self.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
         self.resize(250,600)
         self.center()
 

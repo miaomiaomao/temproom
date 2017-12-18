@@ -8,6 +8,7 @@ import sys
 from PyQt5.QtWidgets import (QLabel, QCheckBox, QPushButton, QVBoxLayout,QHBoxLayout,
  QApplication, QWidget,QLineEdit,QMessageBox,QDesktopWidget,QFormLayout)
 import DataBaseRelated
+import qdarkstyle
 import temproom
 
 class Window(QWidget):
@@ -50,6 +51,7 @@ class Window(QWidget):
         # self.setLayout(v_box)
         self.currentuser=username
         self.setWindowTitle('Temproom-欢迎您,'+self.currentuser)
+        self.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
 
         self.b1.clicked.connect(self.btn1_clk)
         self.b2.clicked.connect(self.btn2_clk)
@@ -88,7 +90,7 @@ class Window(QWidget):
         elif DataBaseRelated.getinroom(self.currentuser, roomnumber, keyintoroom, cur, conn)==1:
             buttonReply = QMessageBox.question(self, 'temproom', "房间密钥错误，请核对后输入", QMessageBox.Yes)
             if buttonReply == QMessageBox.Yes:
-                self.le1.clear()
+                
                 self.le2.clear()
                 self.show()
 
