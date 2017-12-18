@@ -90,7 +90,7 @@ class Window(QWidget):
         elif DataBaseRelated.getinroom(self.currentuser, roomnumber, keyintoroom, cur, conn)==1:
             buttonReply = QMessageBox.question(self, 'temproom', "房间密钥错误，请核对后输入", QMessageBox.Yes)
             if buttonReply == QMessageBox.Yes:
-                
+
                 self.le2.clear()
                 self.show()
 
