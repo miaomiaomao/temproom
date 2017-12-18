@@ -11,7 +11,6 @@ import socket
 import time
 import sys
 import os
-from ip import getip
 import DataBaseRelated,threading
 
 
@@ -36,6 +35,7 @@ def server_connect(client_number, s):
             sys.exit(1)
 
         conn[i], addr[i] = s[i].accept()
+        print("连接成功")
         return conn
     #     self._result = result
     #
@@ -75,7 +75,7 @@ def send(conn,username):
                 print('{0} file send over...'.format(filepath))
                 break
             conn.send(data)
-    # conn.close()
+    #conn.close()
 
 
 
