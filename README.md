@@ -1,4 +1,4 @@
-# temproom -SE project
+# Temproom -SE project
 #### 使用方法：下载所有py文件到同一个文件夹中，运行w1.py即可。程序需要pyqt5,pyaudio,pymysql模块的支持，与数据库相关的函数都可以使用
 ### 更新日志
 ##### 17.12.08更新  V0.0.1
