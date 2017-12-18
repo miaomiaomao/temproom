@@ -95,7 +95,15 @@ def return_roomnumberlist(cur):
 
     return numberlist
 
+def return_useramountlist(cur):
+    sql = "select * from Rooms "
+    cur.execute(sql)
+    results = cur.fetchall()
+    numberlist=[]
+    for i in range(cur.rowcount):
+        numberlist.append(results[i][2])
 
+    return numberlist
 
 def numberofrooms(cur):
     sql = "select * from Rooms "
