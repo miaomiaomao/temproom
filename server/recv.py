@@ -11,7 +11,6 @@ import socket
 import time
 import sys
 import os
-from ip import getip
 import DataBaseRelated,threading
 
 
@@ -25,18 +24,20 @@ def server_ini(client_number):
 
 
 def server_connect(client_number, s):
-    conn = []
-    addr = []
+    clients = []
     for i in range(client_number):
         try:
-            s[i].bind('120.79.72.9', 6666))
-            s[i].listen(100)
+            s[i].bind(('192.168.1.8', 6666))
+            s[i].listen(5)
+            s[i].settimeout(None)
+            print('listening')
         except socket.error as msg:
             print(msg)
             sys.exit(1)
-
-        conn[i], addr[i] = s[i].accept()
-        return conn
+        conn,addr=s[i].accept()
+        clients.append((conn,addr))
+        print("连接成功")
+        return clients
     #     self._result = result
     #
     # def get_result(self):
@@ -64,10 +65,12 @@ def send(conn,username):
         # 定义定义文件信息。
         fileinfo_size = os.path.getsize(filepath)
 
+        info=str(fileinfo_size)+' '+str(username)
         # 定义文件头信息，包含文件名和文件大小
-        # fhead = struct.pack('128sl', os.path.basename(filepath),os.stat(filepath).st_size)
-        conn.send(str.encode(str(fileinfo_size)))
-        conn.send(str.encode(username))
+        #fhead = struct.pack('128sl', os.path.basename(filepath),os.stat(filepath).st_size)
+        conn.send(info.encode())
+
+
         fp = open(filepath, 'rb')
         while 1:
             data = fp.read(1024)
@@ -88,11 +91,13 @@ def recv(conn):
 
 #   while 1:
     #fileinfo_size = struct.calcsize('128sl')
-    buf = bytes.decode(conn.recv(1024))
-    username = bytes.decode(conn.recv(1024))
-    filesize=int(buf)
-    if buf:
-        print ('filesize is {0}'.format(buf))
+    info = conn.recv(1024).decode()
+    sp=info.find(' ')
+
+    username = info[sp+1:len(info)]
+    filesize = int(info[0:sp])
+    if filesize:
+        #print ('filesize is {0}'.format(buf))
         recvd_size = 0  # 定义已接收文件的大小
         fp = open(username+'.wav', 'wb')
         print ('start receiving...')

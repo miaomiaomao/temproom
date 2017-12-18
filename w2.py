@@ -97,16 +97,24 @@ class Window(QWidget):
 
         conn.close()
     def btn2_clk(self):
-        roomnumber = int(self.le1.text())
-        keyintoroom = int(self.le2.text())
-        if len(roomnumber) < 4 or len(keyintoroom) < 4:
-            buttonReply = QMessageBox.question(self, 'temproom', "密码错误，请重新登录", QMessageBox.Yes)
+        roomnumber = str(self.le1.text())
+        keyintoroom = str(self.le2.text())
+
+        if roomnumber.isdigit()==False or roomnumber.isdigit()==False:
+            buttonReply = QMessageBox.question(self, 'temproom', "请输入纯数字~", QMessageBox.Yes)
+            if buttonReply == QMessageBox.Yes:
+                self.le1.clear()
+                self.le2.clear()
+
+        elif len(roomnumber) < 4 or len(keyintoroom) < 4:
+            buttonReply = QMessageBox.question(self, 'temproom', "请大于四位数~", QMessageBox.Yes)
             if buttonReply == QMessageBox.Yes:
                 self.le1.clear()
                 self.le2.clear()
         else:
             cur, conn = DataBaseRelated.ini()
-
+            roomnumber = int(self.le1.text())
+            keyintoroom = int(self.le2.text())
             if not DataBaseRelated.search_room(roomnumber,cur):
                 DataBaseRelated.newroom(roomnumber,keyintoroom,self.currentuser,cur,conn)
                 self.hide()
