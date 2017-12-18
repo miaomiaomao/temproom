@@ -99,22 +99,27 @@ class Window(QWidget):
     def btn2_clk(self):
         roomnumber = int(self.le1.text())
         keyintoroom = int(self.le2.text())
-        cur, conn = DataBaseRelated.ini()
-
-        if not DataBaseRelated.search_room(roomnumber,cur):
-            DataBaseRelated.newroom(roomnumber,keyintoroom,self.currentuser,cur,conn)
-            self.hide()
-            self.window3 = temproom.Dialog(self.currentuser, roomnumber)
-            self.window3.show()
-
-        else:
-            buttonReply = QMessageBox.question(self, 'temproom', "房间已被占用，请重新建立", QMessageBox.Yes)
+        if len(roomnumber) < 4 or len(keyintoroom) < 4:
+            buttonReply = QMessageBox.question(self, 'temproom', "密码错误，请重新登录", QMessageBox.Yes)
             if buttonReply == QMessageBox.Yes:
-                self.show()
+                self.le1.clear()
+                self.le2.clear()
+        else:
+            cur, conn = DataBaseRelated.ini()
 
+            if not DataBaseRelated.search_room(roomnumber,cur):
+                DataBaseRelated.newroom(roomnumber,keyintoroom,self.currentuser,cur,conn)
+                self.hide()
+                self.window3 = temproom.Dialog(self.currentuser, roomnumber)
+                self.window3.show()
 
+            else:
+                buttonReply = QMessageBox.question(self, 'temproom', "房间已被占用，请重新建立", QMessageBox.Yes)
+                if buttonReply == QMessageBox.Yes:
+                    self.show()
 
-        conn.close()
+            conn.close()
+
 if __name__=='__main__':
     app = QApplication(sys.argv)
     a_window = Window()

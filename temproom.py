@@ -29,7 +29,7 @@ class Dialog(QDialog):
         self.b1 = QPushButton('上线')
         self.b2 = QPushButton('下线')
         self.b1.clicked.connect(self.connect)
-        self.b2.clicked.connect(self.b2_click)
+        self.b2.clicked.connect(self.close)
         self.username=username
         self.roomnumber=roomnumber
         # 调整显示内容
@@ -128,11 +128,11 @@ class Dialog(QDialog):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    def b2_click(self):
-        cur, conn = DataBaseRelated.ini()
-        DataBaseRelated.useroffline(self.username, self.roomnumber, cur, conn)
-        DataBaseRelated.roomoffline(self.roomnumber, cur, conn)
-        conn.close()
+    # def b2_click(self):
+    #     cur, conn = DataBaseRelated.ini()
+    #     DataBaseRelated.useroffline(self.username, self.roomnumber, cur, conn)
+    #     DataBaseRelated.roomoffline(self.roomnumber, cur, conn)
+    #     conn.close()
     # def btn1_clk(self):
     #         pass
     #

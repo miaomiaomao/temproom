@@ -68,6 +68,7 @@ class Window(QWidget):
     def btn1_clk(self):
         username=str(self.le1.text())
         password=str(self.le2.text())
+
         cur,conn=DataBaseRelated.ini()
         if DataBaseRelated.signin(username,password,cur)==0:
                 self.hide()
@@ -88,20 +89,26 @@ class Window(QWidget):
     def btn2_clk(self):
         username = self.le1.text()
         password = self.le2.text()
-        cur, conn = DataBaseRelated.ini()
-        if not DataBaseRelated.search_username(username,cur):
-            DataBaseRelated.signup(username,password,cur,conn)
-            buttonReply = QMessageBox.question(self, 'temproom', "注册成功！", QMessageBox.Yes)
+        if len(username)<4 or len(password)<4:
+            buttonReply = QMessageBox.question(self, 'temproom', "用户名和密码须大于四位", QMessageBox.Yes)
             if buttonReply == QMessageBox.Yes:
-                self.hide()
-                self.window2 = w2.Window(username)
-                self.window2.show()
-
+                self.le1.clear()
+                self.le2.clear()
         else:
-            buttonReply = QMessageBox.question(self, 'temproom', "用户名已被占用，请重新注册", QMessageBox.Yes)
-            if buttonReply == QMessageBox.Yes:
-                self.show()
-        conn.close()
+            cur, conn = DataBaseRelated.ini()
+            if not DataBaseRelated.search_username(username,cur):
+                DataBaseRelated.signup(username,password,cur,conn)
+                buttonReply = QMessageBox.question(self, 'temproom', "注册成功！", QMessageBox.Yes)
+                if buttonReply == QMessageBox.Yes:
+                    self.hide()
+                    self.window2 = w2.Window(username)
+                    self.window2.show()
+
+            else:
+                buttonReply = QMessageBox.question(self, 'temproom', "用户名已被占用，请重新注册", QMessageBox.Yes)
+                if buttonReply == QMessageBox.Yes:
+                    self.show()
+            conn.close()
 
 
 
