@@ -36,6 +36,7 @@ class Window(QWidget):
         self.l2.setFont(self.font)
         self.b1.setFont(self.font)
         self.b2.setFont(self.font)
+        # self.le2.setFont(QtGui.QFont("Times", 6, QtGui.QFont.Bold))
 
         #self.setGeometry(200,200,200,200)
         layout=QFormLayout()
