@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import (QApplication, QComboBox, QDialog,
         QDialogButtonBox, QFormLayout, QGridLayout, QGroupBox, QHBoxLayout,
         QLabel, QLineEdit, QMenu, QMenuBar, QPushButton,QVBoxLayout, QDesktopWidget,QMessageBox)
 from PyQt5 import QtCore,QtGui
-import sys
+import sys,time
 import send,record,play,threading
 import DataBaseRelated
 import qdarkstyle
@@ -19,7 +19,7 @@ class Dialog(QDialog):
     userlist=[]
     user=[]
     username=''
-
+    closesignal=0
     font = QtGui.QFont("Arial", 12, QtGui.QFont.Bold)
 
     def __init__(self,username,roomnumber):
@@ -46,22 +46,22 @@ class Dialog(QDialog):
         # 调整显示内容
         cur, conn = DataBaseRelated.ini()
         self.number = DataBaseRelated.curretroomusernumber(roomnumber,cur)
+        result = DataBaseRelated.curretroomusers(roomnumber, cur)
+
+        for i in range(10):
+            self.user.append(QLabel(''))
+
+
         for i in range(self.number):
-            result=DataBaseRelated.curretroomusers(roomnumber,cur)
             self.userlist.append(result[i][2])
-            self.use = QLabel(str(self.userlist[i]))
-            self.user.append(self.use)
+            self.user[i].setText(str(self.userlist[i]))
         conn.close()
-
-
-
-
 
 
 
         self.formGroupBox = QGroupBox("本房间内用户")
         layout = QVBoxLayout()
-        for i in range(self.number):
+        for i in range(10):
             layout.addWidget(self.user[i])
         layout.addStretch()
         self.formGroupBox.setLayout(layout)
@@ -108,8 +108,29 @@ class Dialog(QDialog):
 
         # self.b1.clicked.connect(self.btn1_clk)
         # self.b2.clicked.connect(self.btn2_clk)
+        try:
+            self.t=threading.Thread(target=self.refresh)
+            self.t.start()
+        except:
 
-        self.hide()
+            a = QMessageBox(self)
+            a.setFont(self.font)
+            a.setText("程序异常，请退出")
+            a.setWindowModality(QtCore.Qt.WindowModal)
+
+            a.setIcon(QMessageBox.NoIcon)
+            a.setDefaultButton(QMessageBox.Yes)
+
+
+            if a.exec() == 1024:
+                # cur, conn = DataBaseRelated.ini()
+                # DataBaseRelated.useroffline(self.username, self.roomnumber, cur, conn)
+                # DataBaseRelated.roomoffline(self.roomnumber, cur, conn)
+                # conn.close()
+                self.close()
+
+
+
 
     def connect(self):
         pass
@@ -141,6 +162,7 @@ class Dialog(QDialog):
             DataBaseRelated.useroffline(self.username, self.roomnumber, cur, conn)
             DataBaseRelated.roomoffline(self.roomnumber, cur, conn)
             conn.close()
+            self.closesignal=1
         elif result == 1:
             event.ignore()
 
@@ -155,6 +177,76 @@ class Dialog(QDialog):
         #     conn.close()
         # else:
         #     event.ignore()
+
+    def refresh(self):
+
+        while 1:
+            time.sleep(1)
+            #print(self.number)
+
+            cur, conn = DataBaseRelated.ini()
+            #print(DataBaseRelated.curretroomusernumber(self.roomnumber, cur))
+
+            if DataBaseRelated.curretroomusernumber(self.roomnumber, cur) != self.number:
+                cur2, conn2 = DataBaseRelated.ini()
+                self.number = DataBaseRelated.curretroomusernumber(self.roomnumber, cur)
+                del self.userlist[:]
+                # del self.user[:]
+                result = DataBaseRelated.curretroomusers(self.roomnumber, cur)
+                conn2.close()
+                for i in range(10):
+                    self.user[i].setText('')
+
+
+                for i in range(self.number):
+                    self.userlist.append(result[i][2])
+                    self.user[i].setText(str(self.userlist[i]))
+                self.update()
+                #     self.use = QLabel(str(self.userlist[i]))
+                #     self.user.append(self.use)
+                # layout = QVBoxLayout()
+                # for i in range(self.number):
+                #     layout.addWidget(self.user[i])
+                # layout.addStretch()
+                #
+                # self.formGroupBox.setLayout(layout)
+                # self.formGroupBox.update()
+                #
+                # v_box = QVBoxLayout()
+                #
+                # layout = QGridLayout()
+                #
+                # h_box1 = QHBoxLayout()
+                # h_box2 = QHBoxLayout()
+                #
+                # h_box1.addWidget(self.l1)
+                # h_box1.addWidget(self.l3)
+                # v_box.addLayout(h_box1)
+                #
+                # h_box2.addWidget(self.l2)
+                # h_box2.addWidget(self.l4)
+                # v_box.addLayout(h_box2)
+                #
+                # layout.addLayout(v_box, 0, 0, 1, 1)
+                # layout.addWidget(self.formGroupBox, 2, 0, 5, 2)
+                # layout.addWidget(self.b1, 7, 0, 1, 1)
+                # layout.addWidget(self.b2, 7, 1, 1, 1)
+                # self.setLayout(layout)
+                # self.update()
+                # self.hide()
+
+                # try:
+                #     t=threading.Thread(target=new,args=(self.username, self.roomnumber))
+                #     t.start()
+                # except:
+                #     break
+                #
+                # break
+            conn.close()
+            if self.closesignal == 1:
+                break
+
+
 
     def center(self):
         qr = self.frameGeometry()
@@ -186,6 +278,10 @@ class Dialog(QDialog):
                     send.recv(s)
                     t = threading.Thread(target=play.play,args=i)
                     t.start()
+
+# def new(username,roomnumber):
+#     new_window = Dialog(username, roomnumber)
+#     new_window.show()
 
 
 if __name__ == '__main__':

@@ -4,7 +4,7 @@
 """
 file: w1.py
 """
-import sys
+import sys,threading
 from PyQt5.QtWidgets import (QLabel, QCheckBox, QPushButton, QVBoxLayout,QHBoxLayout, QApplication,
     QWidget,QLineEdit,QMessageBox,QDesktopWidget,QFormLayout)
 import qdarkstyle
@@ -104,14 +104,31 @@ class Window(QWidget):
     def btn1_clk(self):
         username=str(self.le1.text())
         password=str(self.le2.text())
+        try:
+            cur,conn=DataBaseRelated.ini()
+        except:
+            a = QMessageBox(self)
+            a.setFont(self.font)
+            a.setText("请检查网络连接")
+            a.setWindowModality(QtCore.Qt.WindowModal)
 
-        cur,conn=DataBaseRelated.ini()
+            a.setIcon(QMessageBox.NoIcon)
+            a.setDefaultButton(QMessageBox.Yes)
+
+            # buttonReply = a.(self, 'temproom', "您已经在线了，请勿重复登录", QMessageBox.Yes)
+
+            if a.exec() == 1024:
+                return 0
+
+
         response=DataBaseRelated.signin(username,password,cur)
         if response==0:
             if DataBaseRelated.search_userstatus(username,cur)==0:
                 self.hide()
                 self.window2=w2.Window(username)
                 self.window2.show()
+                # t=threading.Thread(target=new,args=username)
+                # t.start()
             else:
                 a=QMessageBox(self)
                 a.setFont(self.font)
@@ -185,7 +202,22 @@ class Window(QWidget):
             #     self.le1.clear()
             #     self.le2.clear()
         else:
-            cur, conn = DataBaseRelated.ini()
+            try:
+                cur, conn = DataBaseRelated.ini()
+            except:
+                a = QMessageBox(self)
+                a.setFont(self.font)
+                a.setText("请检查网络连接")
+                a.setWindowModality(QtCore.Qt.WindowModal)
+
+                a.setIcon(QMessageBox.NoIcon)
+                a.setDefaultButton(QMessageBox.Yes)
+
+                # buttonReply = a.(self, 'temproom', "您已经在线了，请勿重复登录", QMessageBox.Yes)
+
+                if a.exec() == 1024:
+                    return 0
+
             if not DataBaseRelated.search_username(username,cur):
                 DataBaseRelated.signup(username,password,cur,conn)
                 a = QMessageBox(self)
@@ -226,7 +258,6 @@ class Window(QWidget):
                 #     self.le2.clear()
                 #     self.show()
             conn.close()
-
 
 
 if __name__=='__main__':

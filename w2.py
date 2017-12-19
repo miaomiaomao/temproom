@@ -79,13 +79,6 @@ class Window(QWidget):
 
 
     def closeEvent(self, event):
-        # reply = QMessageBox.question(self, '确认', 'You sure to quit?',
-        #                              QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        #
-        # if reply == QMessageBox.Yes:
-        #     event.accept()
-        # else:
-        #     event.ignore()
         a = QMessageBox(self)
         a.setText("您确定要退出吗？")
         a.setFont(self.font)
@@ -141,8 +134,22 @@ class Window(QWidget):
         else:
             roomnumber = int(self.le1.text())
             keyintoroom = int(self.le2.text())
+            try:
+                cur, conn = DataBaseRelated.ini()
+            except:
+                a = QMessageBox(self)
+                a.setFont(self.font)
+                a.setText("请检查网络连接")
+                a.setWindowModality(QtCore.Qt.WindowModal)
 
-            cur, conn = DataBaseRelated.ini()
+                a.setIcon(QMessageBox.NoIcon)
+                a.setDefaultButton(QMessageBox.Yes)
+
+                # buttonReply = a.(self, 'temproom', "您已经在线了，请勿重复登录", QMessageBox.Yes)
+
+                if a.exec() == 1024:
+                    return 0
+            # cur, conn = DataBaseRelated.ini()
             if DataBaseRelated.getinroom(self.currentuser, roomnumber, keyintoroom, cur, conn)==0:
                 self.hide()
                 self.window3 = temproom.Dialog(self.currentuser,roomnumber)
@@ -227,7 +234,22 @@ class Window(QWidget):
             #     self.le1.clear()
             #     self.le2.clear()
         else:
-            cur, conn = DataBaseRelated.ini()
+            try:
+                cur, conn = DataBaseRelated.ini()
+            except:
+                a = QMessageBox(self)
+                a.setFont(self.font)
+                a.setText("请检查网络连接")
+                a.setWindowModality(QtCore.Qt.WindowModal)
+
+                a.setIcon(QMessageBox.NoIcon)
+                a.setDefaultButton(QMessageBox.Yes)
+
+                # buttonReply = a.(self, 'temproom', "您已经在线了，请勿重复登录", QMessageBox.Yes)
+
+                if a.exec() == 1024:
+                    return 0
+            # cur, conn = DataBaseRelated.ini()
             roomnumber = int(self.le1.text())
             keyintoroom = int(self.le2.text())
             if not DataBaseRelated.search_room(roomnumber,cur):
