@@ -13,7 +13,7 @@ import DataBaseRelated,w2
 
 
 class Window(QWidget):
-
+    font = QtGui.QFont("Times", 15, QtGui.QFont.Bold)
     def __init__(self):
         super().__init__()
         self.setWindowIcon(QtGui.QIcon('1.png'))
@@ -24,13 +24,18 @@ class Window(QWidget):
         self.l2 = QLabel('密码')
         self.le1 = QLineEdit()
         self.le2 = QLineEdit()
+        self.le2.setEchoMode(QLineEdit.Password)
         self.b1 = QPushButton('登录')
         self.b2 = QPushButton('注册')
 
-        font1=QtGui.QFont('SansSerif', 20)
-        font2=QtGui.QFont("Times", 20, QtGui.QFont.Bold)
-        self.b1.setFont(font1)
-        self.b2.setFont(font2)
+        #self.b1.setFont(font1)
+
+
+        self.setFont(self.font)
+        self.l1.setFont(self.font)
+        self.l2.setFont(self.font)
+        self.b1.setFont(self.font)
+        self.b2.setFont(self.font)
 
         #self.setGeometry(200,200,200,200)
         layout=QFormLayout()
@@ -66,6 +71,7 @@ class Window(QWidget):
 
     def closeEvent(self, event):
         a = QMessageBox(self)
+        a.setFont(self.font)
         a.setText("您确定要退出吗？")
         a.setWindowModality(QtCore.Qt.WindowModal)
 
@@ -106,6 +112,7 @@ class Window(QWidget):
                 self.window2.show()
             else:
                 a=QMessageBox(self)
+                a.setFont(self.font)
                 a.setText("您已经在线了，请勿重复登录")
                 a.setWindowModality(QtCore.Qt.WindowModal)
 
@@ -122,6 +129,7 @@ class Window(QWidget):
         elif response==1:
             a = QMessageBox(self)
             a.setText("密码错误，请重新登录")
+            a.setFont(self.font)
             a.setWindowModality(QtCore.Qt.WindowModal)
 
             a.setIcon(QMessageBox.NoIcon)
@@ -141,6 +149,7 @@ class Window(QWidget):
         elif response==2:
             a = QMessageBox(self)
             a.setText("不存在此用户，请注册")
+            a.setFont(self.font)
             a.setWindowModality(QtCore.Qt.WindowModal)
 
             a.setIcon(QMessageBox.NoIcon)
@@ -151,11 +160,7 @@ class Window(QWidget):
             if a.exec() == 1024:
                 self.le1.clear()
                 self.le2.clear()
-            # buttonReply = QMessageBox.question(self, 'temproom', "不存在此用户，请注册", QMessageBox.Yes)
-            # if buttonReply == QMessageBox.Yes:
-            #     self.le1.clear()
-            #     self.le2.clear()
-            #     self.show()
+
         conn.close()
 
     def btn2_clk(self):
@@ -163,6 +168,7 @@ class Window(QWidget):
         password = str(self.le2.text())
         if len(username)<4 or len(password)<4:
             a = QMessageBox(self)
+            a.setFont(self.font)
             a.setText("用户名和密码须大于四位")
             a.setWindowModality(QtCore.Qt.WindowModal)
 
@@ -182,6 +188,7 @@ class Window(QWidget):
                 DataBaseRelated.signup(username,password,cur,conn)
                 a = QMessageBox(self)
                 a.setText("注册成功~")
+                a.setFont(self.font)
                 a.setWindowModality(QtCore.Qt.WindowModal)
 
                 a.setIcon(QMessageBox.NoIcon)
@@ -200,6 +207,7 @@ class Window(QWidget):
             else:
                 a = QMessageBox(self)
                 a.setText("这个用户名被别人用了，换一个吧")
+                a.setFont(self.font)
                 a.setWindowModality(QtCore.Qt.WindowModal)
 
                 a.setIcon(QMessageBox.NoIcon)

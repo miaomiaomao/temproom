@@ -20,6 +20,8 @@ class Dialog(QDialog):
     user=[]
     username=''
 
+    font = QtGui.QFont("Times", 15, QtGui.QFont.Bold)
+
     def __init__(self,username,roomnumber):
         super(Dialog, self).__init__()
         self.setWindowIcon(QtGui.QIcon('1.png'))
@@ -29,6 +31,14 @@ class Dialog(QDialog):
         self.l4 = QLabel(str(roomnumber))
         self.b1 = QPushButton('连接服务器')
         self.b2 = QPushButton('下线')
+
+        self.setFont(self.font)
+        self.l1.setFont(self.font)
+        self.l2.setFont(self.font)
+        self.b1.setFont(self.font)
+        self.b2.setFont(self.font)
+
+
         self.b1.clicked.connect(self.connect)
         self.b2.clicked.connect(self.close)
         self.username=username
@@ -110,6 +120,7 @@ class Dialog(QDialog):
     def closeEvent(self, event):
         a = QMessageBox(self)
         a.setText("您确定要退出吗？")
+        a.setFont(self.font)
         a.setWindowModality(QtCore.Qt.WindowModal)
         b = QtGui.QPixmap('2.png')
         a.setIconPixmap(b)

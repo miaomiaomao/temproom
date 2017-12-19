@@ -14,7 +14,7 @@ import temproom
 
 class Window(QWidget):
     currentuser=''
-
+    font = QtGui.QFont("Arial", 15, QtGui.QFont.Bold)
     def __init__(self,username):
         super().__init__()
         self.setWindowIcon(QtGui.QIcon('1.png'))
@@ -25,8 +25,16 @@ class Window(QWidget):
         self.l2 = QLabel('密钥')
         self.le1 = QLineEdit()
         self.le2 = QLineEdit()
+        self.le2.setEchoMode(QLineEdit.Password)
         self.b1 = QPushButton('进入房间')
         self.b2 = QPushButton('创建新房间')
+
+        self.setFont(self.font)
+        self.l1.setFont(self.font)
+        self.l2.setFont(self.font)
+        self.b1.setFont(self.font)
+        self.b2.setFont(self.font)
+
 
         layout=QFormLayout()
         layout.addRow(self.l1,self.le1)
@@ -79,6 +87,7 @@ class Window(QWidget):
         #     event.ignore()
         a = QMessageBox(self)
         a.setText("您确定要退出吗？")
+        a.setFont(self.font)
         a.setWindowModality(QtCore.Qt.WindowModal)
         b = QtGui.QPixmap('2.png')
 
@@ -119,6 +128,7 @@ class Window(QWidget):
         if str(self.le1.text()).isdigit()==False or str(self.le2.text()).isdigit()==False:
             a = QMessageBox(self)
             a.setText("请输入纯数字~")
+            a.setFont(self.font)
             a.setWindowModality(QtCore.Qt.WindowModal)
 
             a.setIcon(QMessageBox.NoIcon)
@@ -140,6 +150,7 @@ class Window(QWidget):
             elif DataBaseRelated.getinroom(self.currentuser, roomnumber, keyintoroom, cur, conn)==1:
                 a = QMessageBox(self)
                 a.setText("密钥错误，请核对后再输入")
+                a.setFont(self.font)
                 a.setWindowModality(QtCore.Qt.WindowModal)
 
                 a.setIcon(QMessageBox.NoIcon)
@@ -158,6 +169,7 @@ class Window(QWidget):
             elif DataBaseRelated.getinroom(self.currentuser, roomnumber, keyintoroom, cur, conn) ==2:
                 a = QMessageBox(self)
                 a.setText("没有这个房间~")
+                a.setFont(self.font)
                 a.setWindowModality(QtCore.Qt.WindowModal)
 
                 a.setIcon(QMessageBox.NoIcon)
@@ -181,6 +193,7 @@ class Window(QWidget):
         if roomnumber.isdigit()==False or roomnumber.isdigit()==False:
             a = QMessageBox(self)
             a.setText("请输入纯数字~")
+            a.setFont(self.font)
             a.setWindowModality(QtCore.Qt.WindowModal)
 
             a.setIcon(QMessageBox.NoIcon)
@@ -198,6 +211,7 @@ class Window(QWidget):
         elif len(roomnumber) < 4 or len(keyintoroom) < 4:
             a = QMessageBox(self)
             a.setText("请输入不小于四位的数字~")
+            a.setFont(self.font)
             a.setWindowModality(QtCore.Qt.WindowModal)
 
             a.setIcon(QMessageBox.NoIcon)
@@ -224,6 +238,7 @@ class Window(QWidget):
             else:
                 a = QMessageBox(self)
                 a.setText("这个房间被别人用啦~")
+                a.setFont(self.font)
                 a.setWindowModality(QtCore.Qt.WindowModal)
 
                 a.setIcon(QMessageBox.NoIcon)
