@@ -26,6 +26,12 @@ class Window(QWidget):
         self.le2 = QLineEdit()
         self.b1 = QPushButton('登录')
         self.b2 = QPushButton('注册')
+
+        font1=QtGui.QFont('SansSerif', 20)
+        font2=QtGui.QFont("Times", 20, QtGui.QFont.Bold)
+        self.b1.setFont(font1)
+        self.b2.setFont(font2)
+
         #self.setGeometry(200,200,200,200)
         layout=QFormLayout()
         layout.addRow(self.l1,self.le1)
