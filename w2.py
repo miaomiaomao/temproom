@@ -80,8 +80,9 @@ class Window(QWidget):
         a = QMessageBox(self)
         a.setText("您确定要退出吗？")
         a.setWindowModality(QtCore.Qt.WindowModal)
-
-        a.setIcon(QMessageBox.NoIcon)
+        b = QtGui.QPixmap('2.png')
+        a.setIconPixmap(b)
+        #a.setIcon(QMessageBox.NoIcon)
         # a.addButton('确定',QMessageBox.AcceptRole)
         # a.addButton('取消',QMessageBox.RejectRole)
         a.setDefaultButton(a.addButton('确定', QMessageBox.AcceptRole))

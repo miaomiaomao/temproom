@@ -64,7 +64,7 @@ class Window(QWidget):
         a.setWindowModality(QtCore.Qt.WindowModal)
 
         # a.setIcon(QMessageBox.NoIcon)
-        b=QtGui.QPixmap('1.png')
+        b=QtGui.QPixmap('2.png')
         a.setIconPixmap(b)
         # a.addButton('确定',QMessageBox.AcceptRole)
         # a.addButton('取消',QMessageBox.RejectRole)
