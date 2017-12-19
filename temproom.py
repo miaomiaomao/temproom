@@ -123,7 +123,7 @@ class Dialog(QDialog):
         #                              QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 
         result = a.exec()
-        print(result)
+        #print(result)
         if result == 0:
             event.accept()
             cur, conn = DataBaseRelated.ini()

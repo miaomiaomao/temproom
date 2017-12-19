@@ -65,6 +65,7 @@ class Window(QWidget):
 
         # a.setIcon(QMessageBox.NoIcon)
         b=QtGui.QPixmap('2.png')
+
         a.setIconPixmap(b)
         # a.addButton('确定',QMessageBox.AcceptRole)
         # a.addButton('取消',QMessageBox.RejectRole)
@@ -78,7 +79,7 @@ class Window(QWidget):
 
 
         result=a.exec()
-        print(result)
+        #print(result)
         if  result== 0:
             event.accept()
 
