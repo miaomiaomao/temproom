@@ -70,14 +70,33 @@ class Window(QWidget):
 
 
     def closeEvent(self, event):
-        reply = QMessageBox.question(self, '确认', 'You sure to quit?',
-                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        # reply = QMessageBox.question(self, '确认', 'You sure to quit?',
+        #                              QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        #
+        # if reply == QMessageBox.Yes:
+        #     event.accept()
+        # else:
+        #     event.ignore()
+        a = QMessageBox(self)
+        a.setText("您确定要退出吗？")
+        a.setWindowModality(QtCore.Qt.WindowModal)
 
-        if reply == QMessageBox.Yes:
+        a.setIcon(QMessageBox.NoIcon)
+        # a.addButton('确定',QMessageBox.AcceptRole)
+        # a.addButton('取消',QMessageBox.RejectRole)
+        a.setDefaultButton(a.addButton('确定', QMessageBox.AcceptRole))
+        a.setEscapeButton(a.addButton('取消', QMessageBox.RejectRole))
+
+        # reply = QMessageBox.question(self, '确认', '您确定要退出吗？',
+        #                              QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+        result = a.exec()
+        print(result)
+        if result == 0:
             event.accept()
-        else:
-            event.ignore()
 
+        elif result == 1:
+            event.ignore()
 
     def btn1_clk(self):
         # try:
