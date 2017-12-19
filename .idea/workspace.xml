@@ -20,8 +20,8 @@
       <file leaf-file-name="w1.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/w1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="41" column="28" lean-forward="false" selection-start-line="41" selection-start-column="28" selection-end-line="41" selection-end-column="28" />
+            <state relative-caret-position="273">
+              <caret line="41" column="8" lean-forward="true" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="29" />
               <folding>
                 <element signature="e#45#55#0" expanded="true" />
               </folding>
@@ -32,8 +32,8 @@
       <file leaf-file-name="w2.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/w2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="97">
-              <caret line="39" column="39" lean-forward="false" selection-start-line="39" selection-start-column="39" selection-end-line="39" selection-end-column="39" />
+            <state relative-caret-position="302">
+              <caret line="39" column="20" lean-forward="true" selection-start-line="39" selection-start-column="20" selection-end-line="39" selection-end-column="20" />
               <folding>
                 <element signature="e#45#55#0" expanded="true" />
               </folding>
@@ -60,8 +60,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/temproom.py" />
-        <option value="$PROJECT_DIR$/w2.py" />
         <option value="$PROJECT_DIR$/w1.py" />
+        <option value="$PROJECT_DIR$/w2.py" />
       </list>
     </option>
   </component>
@@ -245,8 +245,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/w2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="97">
-          <caret line="39" column="39" lean-forward="false" selection-start-line="39" selection-start-column="39" selection-end-line="39" selection-end-column="39" />
+        <state relative-caret-position="302">
+          <caret line="39" column="20" lean-forward="true" selection-start-line="39" selection-start-column="20" selection-end-line="39" selection-end-column="20" />
           <folding>
             <element signature="e#45#55#0" expanded="true" />
           </folding>
@@ -255,8 +255,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/w1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="41" column="28" lean-forward="false" selection-start-line="41" selection-start-column="28" selection-end-line="41" selection-end-column="28" />
+        <state relative-caret-position="273">
+          <caret line="41" column="8" lean-forward="true" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="29" />
           <folding>
             <element signature="e#45#55#0" expanded="true" />
           </folding>

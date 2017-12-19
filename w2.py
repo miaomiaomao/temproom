@@ -37,6 +37,7 @@ class Window(QWidget):
 
 
         layout=QFormLayout()
+        layout.setSpacing(15)
         layout.addRow(self.l1,self.le1)
         layout.addRow(self.l2,self.le2)
         v_box = QVBoxLayout()
@@ -65,7 +66,7 @@ class Window(QWidget):
         self.b1.clicked.connect(self.btn1_clk)
         self.b2.clicked.connect(self.btn2_clk)
 
-        self.resize(250,120)
+        self.resize(250,150)
         self.center()
         self.show()
 
