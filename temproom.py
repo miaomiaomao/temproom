@@ -20,7 +20,7 @@ class Dialog(QDialog):
     user=[]
     username=''
 
-    font = QtGui.QFont("Times", 12, QtGui.QFont.Bold)
+    font = QtGui.QFont("Arial", 12, QtGui.QFont.Bold)
 
     def __init__(self,username,roomnumber):
         super(Dialog, self).__init__()
