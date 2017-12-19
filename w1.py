@@ -215,5 +215,6 @@ class Window(QWidget):
 
 if __name__=='__main__':
     app = QApplication(sys.argv)
+    app.setWindowIcon(QtGui.QIcon('1.png'))
     a_window = Window()
     sys.exit(app.exec_())
