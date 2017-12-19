@@ -13,7 +13,7 @@ import DataBaseRelated,w2
 
 
 class Window(QWidget):
-    font = QtGui.QFont("Times", 15, QtGui.QFont.Bold)
+    font = QtGui.QFont("Times", 12, QtGui.QFont.Bold)
     def __init__(self):
         super().__init__()
         self.setWindowIcon(QtGui.QIcon('1.png'))

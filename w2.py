@@ -14,7 +14,7 @@ import temproom
 
 class Window(QWidget):
     currentuser=''
-    font = QtGui.QFont("Arial", 15, QtGui.QFont.Bold)
+    font = QtGui.QFont("Times", 12, QtGui.QFont.Bold)
     def __init__(self,username):
         super().__init__()
         self.setWindowIcon(QtGui.QIcon('1.png'))
