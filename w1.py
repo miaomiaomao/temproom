@@ -39,6 +39,7 @@ class Window(QWidget):
 
         #self.setGeometry(200,200,200,200)
         layout=QFormLayout()
+        layout.setSpacing(10)
         layout.addRow(self.l1,self.le1)
         layout.addRow(self.l2,self.le2)
 

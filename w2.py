@@ -49,7 +49,7 @@ class Window(QWidget):
         # v_box.addLayout(h_box1)
 
 
-        h_box.addStretch()
+        # h_box.addStretch()
         h_box.addWidget(self.b1)
         h_box.addWidget(self.b2)
         # v_box.addLayout(h_box2)
