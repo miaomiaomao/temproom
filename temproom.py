@@ -7,7 +7,7 @@ file: main.py
 from PyQt5.QtWidgets import (QApplication, QComboBox, QDialog,
         QDialogButtonBox, QFormLayout, QGridLayout, QGroupBox, QHBoxLayout,
         QLabel, QLineEdit, QMenu, QMenuBar, QPushButton,QVBoxLayout, QDesktopWidget,QMessageBox)
-
+from PyQt5 import QtCore,QtGui
 import sys
 import send,record,play,threading
 import DataBaseRelated
@@ -22,7 +22,7 @@ class Dialog(QDialog):
 
     def __init__(self,username,roomnumber):
         super(Dialog, self).__init__()
-
+        self.setWindowIcon(QtGui.QIcon('1.png'))
         self.l1 = QLabel('当前用户：')
         self.l2 = QLabel('房间号：')
         self.l3 = QLabel(str(username))
@@ -103,12 +103,8 @@ class Dialog(QDialog):
 
     def connect(self):
         pass
-        # so = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # so.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        # so.bind((ip.getip(), 6666))
-        # so.listen(1000)
-        # conn, addr = so.accept()
-        # t = threading.Thread(target=self.flow,args=conn)
+        # so =send.client_connect()
+        # t = threading.Thread(target=self.flow,args=so)
         # t.start()
 
     def closeEvent(self, event):
@@ -145,22 +141,15 @@ class Dialog(QDialog):
     #
     # def createFormGroupBox(self,):
 
-    def flow(self,conn):
-        # s = send.client_connect()
-        # while 1:
-        #     record.record(self.username)
-        #     send.send(s, self.username)
-        #     for i in self.userlist:
-        #         if self.username != i:
-        #             send.recv(s)
-        #             t = threading.Thread(target=play.play,args=i)
-        #             t.start()
-
+    def flow(self,s):
         while 1:
             record.record(self.username)
-            send.send(conn, self.username)
-            opp = send.recv(conn)
-            play(opp)
+            send.send(s, self.username)
+            for i in self.userlist:
+                if self.username != i:
+                    send.recv(s)
+                    t = threading.Thread(target=play.play,args=i)
+                    t.start()
 
 
 if __name__ == '__main__':

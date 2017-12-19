@@ -8,6 +8,7 @@ import sys
 from PyQt5.QtWidgets import (QLabel, QCheckBox, QPushButton, QVBoxLayout,QHBoxLayout,
  QApplication, QWidget,QLineEdit,QMessageBox,QDesktopWidget,QFormLayout)
 import DataBaseRelated
+from PyQt5 import QtCore,QtGui
 import qdarkstyle
 import temproom
 
@@ -16,7 +17,7 @@ class Window(QWidget):
 
     def __init__(self,username):
         super().__init__()
-
+        self.setWindowIcon(QtGui.QIcon('1.png'))
         self.init_ui(username)
 
     def init_ui(self,username):
@@ -79,44 +80,116 @@ class Window(QWidget):
 
 
     def btn1_clk(self):
-        roomnumber = int(self.le1.text())
-        keyintoroom = int(self.le2.text())
-        cur, conn = DataBaseRelated.ini()
-        if DataBaseRelated.getinroom(self.currentuser, roomnumber, keyintoroom, cur, conn)==0:
-            self.hide()
-            self.window3 = temproom.Dialog(self.currentuser,roomnumber)
-            self.window3.show()
+        # try:
+        #     roomnumber = int(self.le1.text())
+        # except ValueError:
+        #     a = QMessageBox(self)
+        #     a.setText("请输入纯数字~")
+        #     a.setWindowModality(QtCore.Qt.WindowModal)
+        #
+        #     a.setIcon(QMessageBox.NoIcon)
+        #     a.setDefaultButton(QMessageBox.Yes)
+        #
+        #     if a.exec() == 1024:
+        #         self.le1.clear()
+        #         #self.le2.clear()
 
-        elif DataBaseRelated.getinroom(self.currentuser, roomnumber, keyintoroom, cur, conn)==1:
-            buttonReply = QMessageBox.question(self, 'temproom', "房间密钥错误，请核对后输入", QMessageBox.Yes)
-            if buttonReply == QMessageBox.Yes:
 
-                self.le2.clear()
-                self.show()
+        if str(self.le1.text()).isdigit()==False or str(self.le2.text()).isdigit()==False:
+            a = QMessageBox(self)
+            a.setText("请输入纯数字~")
+            a.setWindowModality(QtCore.Qt.WindowModal)
 
-        elif DataBaseRelated.getinroom(self.currentuser, roomnumber, keyintoroom, cur, conn) ==2:
-            buttonReply = QMessageBox.question(self, 'temproom', "不存在此房间，请新建", QMessageBox.Yes)
-            if buttonReply == QMessageBox.Yes:
+            a.setIcon(QMessageBox.NoIcon)
+            a.setDefaultButton(QMessageBox.Yes)
+
+            if a.exec() == 1024:
                 self.le1.clear()
                 self.le2.clear()
-                self.show()
+        else:
+            roomnumber = int(self.le1.text())
+            keyintoroom = int(self.le2.text())
 
-        conn.close()
+            cur, conn = DataBaseRelated.ini()
+            if DataBaseRelated.getinroom(self.currentuser, roomnumber, keyintoroom, cur, conn)==0:
+                self.hide()
+                self.window3 = temproom.Dialog(self.currentuser,roomnumber)
+                self.window3.show()
+
+            elif DataBaseRelated.getinroom(self.currentuser, roomnumber, keyintoroom, cur, conn)==1:
+                a = QMessageBox(self)
+                a.setText("密钥错误，请核对后再输入")
+                a.setWindowModality(QtCore.Qt.WindowModal)
+
+                a.setIcon(QMessageBox.NoIcon)
+                a.setDefaultButton(QMessageBox.Yes)
+
+                if a.exec() == 1024:
+                    # self.le1.clear()
+                    self.le2.clear()
+
+                # buttonReply = QMessageBox.question(self, 'temproom', "房间密钥错误，请核对后输入", QMessageBox.Yes)
+                # if buttonReply == QMessageBox.Yes:
+                #
+                #     self.le2.clear()
+                #     self.show()
+
+            elif DataBaseRelated.getinroom(self.currentuser, roomnumber, keyintoroom, cur, conn) ==2:
+                a = QMessageBox(self)
+                a.setText("没有这个房间~")
+                a.setWindowModality(QtCore.Qt.WindowModal)
+
+                a.setIcon(QMessageBox.NoIcon)
+                a.setDefaultButton(QMessageBox.Yes)
+
+                if a.exec() == 1024:
+                    self.le1.clear()
+                    self.le2.clear()
+
+                # buttonReply = QMessageBox.question(self, 'temproom', "不存在此房间，请新建", QMessageBox.Yes)
+                # if buttonReply == QMessageBox.Yes:
+                #     self.le1.clear()
+                #     self.le2.clear()
+                #     self.show()
+
+            conn.close()
     def btn2_clk(self):
         roomnumber = str(self.le1.text())
         keyintoroom = str(self.le2.text())
 
         if roomnumber.isdigit()==False or roomnumber.isdigit()==False:
-            buttonReply = QMessageBox.question(self, 'temproom', "请输入纯数字~", QMessageBox.Yes)
-            if buttonReply == QMessageBox.Yes:
+            a = QMessageBox(self)
+            a.setText("请输入纯数字~")
+            a.setWindowModality(QtCore.Qt.WindowModal)
+
+            a.setIcon(QMessageBox.NoIcon)
+            a.setDefaultButton(QMessageBox.Yes)
+
+            if a.exec() == 1024:
                 self.le1.clear()
                 self.le2.clear()
 
+            # buttonReply = QMessageBox.question(self, 'temproom', "请输入纯数字~", QMessageBox.Yes)
+            # if buttonReply == QMessageBox.Yes:
+            #     self.le1.clear()
+            #     self.le2.clear()
+
         elif len(roomnumber) < 4 or len(keyintoroom) < 4:
-            buttonReply = QMessageBox.question(self, 'temproom', "请大于四位数~", QMessageBox.Yes)
-            if buttonReply == QMessageBox.Yes:
-                self.le1.clear()
+            a = QMessageBox(self)
+            a.setText("请输入不小于四位的数字~")
+            a.setWindowModality(QtCore.Qt.WindowModal)
+
+            a.setIcon(QMessageBox.NoIcon)
+            a.setDefaultButton(QMessageBox.Yes)
+
+            if a.exec() == 1024:
+                #self.le1.clear()
                 self.le2.clear()
+
+            # buttonReply = QMessageBox.question(self, 'temproom', "请大于四位数~", QMessageBox.Yes)
+            # if buttonReply == QMessageBox.Yes:
+            #     self.le1.clear()
+            #     self.le2.clear()
         else:
             cur, conn = DataBaseRelated.ini()
             roomnumber = int(self.le1.text())
@@ -128,11 +201,22 @@ class Window(QWidget):
                 self.window3.show()
 
             else:
-                buttonReply = QMessageBox.question(self, 'temproom', "房间已被占用，请重新建立", QMessageBox.Yes)
-                if buttonReply == QMessageBox.Yes:
+                a = QMessageBox(self)
+                a.setText("这个房间被别人用啦~")
+                a.setWindowModality(QtCore.Qt.WindowModal)
+
+                a.setIcon(QMessageBox.NoIcon)
+                a.setDefaultButton(QMessageBox.Yes)
+
+                if a.exec() == 1024:
                     self.le1.clear()
                     self.le2.clear()
-                    self.show()
+
+                # buttonReply = QMessageBox.question(self, 'temproom', "房间已被占用，请重新建立", QMessageBox.Yes)
+                # if buttonReply == QMessageBox.Yes:
+                #     self.le1.clear()
+                #     self.le2.clear()
+                #     self.show()
 
             conn.close()
 

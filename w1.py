@@ -8,7 +8,7 @@ import sys
 from PyQt5.QtWidgets import (QLabel, QCheckBox, QPushButton, QVBoxLayout,QHBoxLayout, QApplication,
     QWidget,QLineEdit,QMessageBox,QDesktopWidget,QFormLayout)
 import qdarkstyle
-# from PyQt5 import QtGui
+from PyQt5 import QtCore,QtGui
 import DataBaseRelated,w2
 
 
@@ -16,7 +16,7 @@ class Window(QWidget):
 
     def __init__(self):
         super().__init__()
-
+        self.setWindowIcon(QtGui.QIcon('1.png'))
         self.init_ui()
 
     def init_ui(self):
@@ -80,50 +80,116 @@ class Window(QWidget):
                 self.window2=w2.Window(username)
                 self.window2.show()
             else:
-                buttonReply = QMessageBox.question(self, 'temproom', "您已经在线了，请勿重复登录", QMessageBox.Yes)
-                if buttonReply == QMessageBox.Yes:
+                a=QMessageBox(self)
+                a.setText("您已经在线了，请勿重复登录")
+                a.setWindowModality(QtCore.Qt.WindowModal)
+
+                a.setIcon(QMessageBox.NoIcon)
+                a.setDefaultButton(QMessageBox.Yes)
+
+
+                #buttonReply = a.(self, 'temproom', "您已经在线了，请勿重复登录", QMessageBox.Yes)
+
+                if a.exec() == 1024:
                     self.le1.clear()
                     self.le2.clear()
 
         elif response==1:
-            buttonReply = QMessageBox.question(self, 'temproom', "密码错误，请重新登录", QMessageBox.Yes)
-            if buttonReply==QMessageBox.Yes:
+            a = QMessageBox(self)
+            a.setText("密码错误，请重新登录")
+            a.setWindowModality(QtCore.Qt.WindowModal)
 
+            a.setIcon(QMessageBox.NoIcon)
+            a.setDefaultButton(QMessageBox.Yes)
+
+
+
+            if a.exec() == 1024:
+                #self.le1.clear()
                 self.le2.clear()
-                self.show()
+            # buttonReply = QMessageBox.question(self, 'temproom', "密码错误，请重新登录", QMessageBox.Yes)
+            # if buttonReply==QMessageBox.Yes:
+            #
+            #     self.le2.clear()
+            #     self.show()
 
         elif response==2:
-            buttonReply = QMessageBox.question(self, 'temproom', "不存在此用户，请注册", QMessageBox.Yes)
-            if buttonReply == QMessageBox.Yes:
+            a = QMessageBox(self)
+            a.setText("不存在此用户，请注册")
+            a.setWindowModality(QtCore.Qt.WindowModal)
+
+            a.setIcon(QMessageBox.NoIcon)
+            a.setDefaultButton(QMessageBox.Yes)
+
+            # buttonReply = a.(self, 'temproom', "您已经在线了，请勿重复登录", QMessageBox.Yes)
+
+            if a.exec() == 1024:
                 self.le1.clear()
                 self.le2.clear()
-                self.show()
+            # buttonReply = QMessageBox.question(self, 'temproom', "不存在此用户，请注册", QMessageBox.Yes)
+            # if buttonReply == QMessageBox.Yes:
+            #     self.le1.clear()
+            #     self.le2.clear()
+            #     self.show()
         conn.close()
 
     def btn2_clk(self):
-        username = self.le1.text()
-        password = self.le2.text()
+        username = str(self.le1.text())
+        password = str(self.le2.text())
         if len(username)<4 or len(password)<4:
-            buttonReply = QMessageBox.question(self, 'temproom', "用户名和密码须大于四位", QMessageBox.Yes)
-            if buttonReply == QMessageBox.Yes:
+            a = QMessageBox(self)
+            a.setText("用户名和密码须大于四位")
+            a.setWindowModality(QtCore.Qt.WindowModal)
+
+            a.setIcon(QMessageBox.NoIcon)
+            a.setDefaultButton(QMessageBox.Yes)
+
+            if a.exec() == 1024:
                 self.le1.clear()
                 self.le2.clear()
+            # buttonReply = QMessageBox.question(self, 'temproom', "用户名和密码须大于四位", QMessageBox.Yes)
+            # if buttonReply == QMessageBox.Yes:
+            #     self.le1.clear()
+            #     self.le2.clear()
         else:
             cur, conn = DataBaseRelated.ini()
             if not DataBaseRelated.search_username(username,cur):
                 DataBaseRelated.signup(username,password,cur,conn)
-                buttonReply = QMessageBox.question(self, 'temproom', "注册成功！", QMessageBox.Yes)
-                if buttonReply == QMessageBox.Yes:
+                a = QMessageBox(self)
+                a.setText("注册成功~")
+                a.setWindowModality(QtCore.Qt.WindowModal)
+
+                a.setIcon(QMessageBox.NoIcon)
+                a.setDefaultButton(QMessageBox.Yes)
+
+                if a.exec() == 1024:
                     self.hide()
                     self.window2 = w2.Window(username)
                     self.window2.show()
+                # buttonReply = QMessageBox.question(self, 'temproom', "注册成功！", QMessageBox.Yes)
+                # if buttonReply == QMessageBox.Yes:
+                #     self.hide()
+                #     self.window2 = w2.Window(username)
+                #     self.window2.show()
 
             else:
-                buttonReply = QMessageBox.question(self, 'temproom', "用户名已被占用，请重新注册", QMessageBox.Yes)
-                if buttonReply == QMessageBox.Yes:
+                a = QMessageBox(self)
+                a.setText("这个用户名被别人用了，换一个吧")
+                a.setWindowModality(QtCore.Qt.WindowModal)
+
+                a.setIcon(QMessageBox.NoIcon)
+                a.setDefaultButton(QMessageBox.Yes)
+
+                if a.exec() == 1024:
                     self.le1.clear()
                     self.le2.clear()
-                    self.show()
+                #     self.window2 = w2.Window(username)
+                #     self.window2.show()
+                # buttonReply = QMessageBox.question(self, 'temproom', "用户名已被占用，请重新注册", QMessageBox.Yes)
+                # if buttonReply == QMessageBox.Yes:
+                #     self.le1.clear()
+                #     self.le2.clear()
+                #     self.show()
             conn.close()
 
 
