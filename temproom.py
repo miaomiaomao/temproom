@@ -1,4 +1,4 @@
-# -*- coding=utf-8 -*-
+﻿# -*- coding=utf-8 -*-
 
 
 """
@@ -35,7 +35,6 @@ class Dialog(QDialog):
         self.cb1 = QCheckBox("童声")
         self.cb2 = QCheckBox("男声")
         self.cb3 = QCheckBox("降噪")
-        #self.cb1= QCheckBox("HHH")
 
         self.setFont(self.font)
         self.l1.setFont(self.font)
