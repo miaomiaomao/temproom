@@ -61,7 +61,7 @@ def recv(s):
         #print('filesize is {0}'.format(buf))
         recvd_size = 0  # 定义已接收文件的大小
         # fp = open(username+'.wav', 'wb')
-        fp = open('服务器接受.wav', 'wb')
+        fp = open(username+'.wav', 'wb')
         print('start receiving from server')
 
         while not recvd_size == filesize:
