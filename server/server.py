@@ -7,6 +7,10 @@ file: temproom_server.py
 import threading
 import DataBaseRelated
 import recv
+
+
+
+
 class MyThread(threading.Thread):
 
     def __init__(self,func,args=()):
@@ -35,8 +39,7 @@ def check():
             users=DataBaseRelated.curretroomusers(numberlist[i],cur)
             total.append((users,numberlist[i]))
     return total
-total=check()
-t=[]
+
 def trans1(client):
     return recv.recv(client)
 
@@ -49,10 +52,14 @@ def trans2(k,client,t):
                     break
             recv.send(client,j.get_result())
 
+
+
+total=check()
+t=[]
 for i in total:
-	amount=len(i[0])#TCP问题很大啊感觉
+    amount=len(i[0])#TCP问题很大啊感觉
     print(amount)
-    s=recv.server_ini（amount)
+    s=recv.server_ini(amount)
     clients=recv.server_connect(amount,s)
     for j in range(amount):
         th=MyThread(target=trans1,args=clients[j][0])

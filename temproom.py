@@ -114,10 +114,10 @@ class Dialog(QDialog):
 
 
     def connect(self):
-        pass
-        # so =send.client_connect()
-        # t = threading.Thread(target=self.flow,args=so)
-        # t.start()
+
+        so =send.client_connect()
+        t = threading.Thread(target=self.flow,args=so)
+        t.start()
 
     def closeEvent(self, event):
         a = QMessageBox(self)
@@ -184,14 +184,6 @@ class Dialog(QDialog):
                     self.user[i].setText(str(self.userlist[i]))
                 self.update()
 
-
-                # try:
-                #     t=threading.Thread(target=new,args=(self.username, self.roomnumber))
-                #     t.start()
-                # except:
-                #     break
-                #
-                # break
             conn.close()
             if self.closesignal == 1:
                 break
@@ -214,6 +206,8 @@ class Dialog(QDialog):
                     send.recv(s)
                     t = threading.Thread(target=play.play,args=i)
                     t.start()
+            if self.closesignal==1:
+                break
 
 
 
