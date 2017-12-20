@@ -54,9 +54,15 @@ def trans2(k,client,t):
 
 
 
-total=check()
+
 t1=[]
 t2=[]
+while 1:
+    total=check()
+    if not total:
+        print(total)
+        break
+
 for i in total:
     amount=len(i[0])#TCP问题很大啊感觉
     print(amount)
