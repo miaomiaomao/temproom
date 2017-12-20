@@ -14,29 +14,36 @@ import os
 import DataBase_server
 
 
-def server_ini(client_number):
-    s = []
-    for i in range(client_number):
-        so = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        so.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        s.append(so)
-    return s
+# def server_ini(client_number):
+#     s = []
+#     for i in range(client_number):
+#         so = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#         so.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+#         s.append(so)
+#     return s
 
 
-def server_connect(client_number, s):
+def server_connect(client_number):
+
     clients = []
+    so = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    so.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    try:
+        so.bind(('192.168.1.8', 6666))
+        so.listen(1)
+        so.settimeout(None)
+        print('listening')
+    except socket.error as msg:
+        print(msg)
+        sys.exit(1)
+    print('listening')
+
+
     for i in range(client_number):
-        try:
-            s[i].bind(('192.168.1.8', 6666))
-            s[i].listen(5)
-            s[i].settimeout(None)
-            print('listening')
-        except socket.error as msg:
-            print(msg)
-            sys.exit(1)
-        conn,addr=s[i].accept()
+        print('连接中....')
+        conn,addr=so.accept()
         clients.append((conn,addr))
-        print("连接成功")
+        print("连接成功 "+addr)
     return clients
     #     self._result = result
     #

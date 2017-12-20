@@ -37,7 +37,7 @@ def send(s,username):
 
         # s.send(str(username).encode())
 
-        print(str(fileinfo_size),str(username))
+        print('sending to server')
 
         fp = open(filepath, 'rb')
         while 1:
@@ -51,6 +51,7 @@ def send(s,username):
 
 def recv(s):
     info = s.recv(1024).decode()
+    print(info)
     sp=info.find(' ')
 
     username = info[sp+1:len(info)]
@@ -60,7 +61,7 @@ def recv(s):
         recvd_size = 0  # 定义已接收文件的大小
         # fp = open(username+'.wav', 'wb')
         fp = open('服务器接受.wav', 'wb')
-        print('start receiving...')
+        print('start receiving from server')
 
         while not recvd_size == filesize:
             if filesize - recvd_size > 1024:
