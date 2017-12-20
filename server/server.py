@@ -55,29 +55,39 @@ def trans2(k,client,t):
 
 
 
+def trans3():
+    t1=[]
+    t2=[]
+    while 1:
+        total=check()
+        print(total)
+        if len(total):
+            break
 
-t1=[]
-t2=[]
-while 1:
-    total=check()
-    print(total)
-    if len(total):
-        break
-
-for i in total:
+    # for i in total:
+    i=total[0]
     amount=len(i[0])#TCP问题很大啊感觉
     print(amount)
     clients=recv.server_connect(amount)
-    for j in range(amount):
-        th=MyThread(func=trans1,args=[clients[j][0]])
-        t1.append(th)
-        t1[j].start()
-    for k in range(amount):
-        th2=threading.Thread(target=trans2,args=(k,clients[k][0],t1))
-        t2.append(th2)
-        t2[k].start()
-        t2[k].join()
+    while 1:
+        for j in range(amount):
+            try:
+                th=MyThread(func=trans1,args=[clients[j][0]])
+            except:
+                return 1
+            t1.append(th)
+            t1[j].start()
+        for k in range(amount):
+            try:
+                th2=threading.Thread(target=trans2,args=(k,clients[k][0],t1))
+            except:
+                return 1
+            t2.append(th2)
+            t2[k].start()
+            t2[k].join()
 
+if __name__=='__main__':
+    trans3()
 
 
 
