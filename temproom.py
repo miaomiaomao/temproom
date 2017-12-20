@@ -128,7 +128,7 @@ class Dialog(QDialog):
             if a.exec() == 1024:
                 self.close()
 
-        t = threading.Thread(target=self.flow,args=so)
+        t = threading.Thread(target=self.flow,args=[so])
         t.start()
 
     def closeEvent(self, event):
@@ -216,7 +216,7 @@ class Dialog(QDialog):
         for i in self.userlist:
             if self.username != i:
                 send.recv(s)
-                t = threading.Thread(target=play.play,args=i)
+                t = threading.Thread(target=play.play,args=[i])
                 t.start()
         # if self.closesignal==1:
         #     break

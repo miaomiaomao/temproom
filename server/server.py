@@ -69,7 +69,7 @@ for i in total:
     s=recv.server_ini(amount)
     clients=recv.server_connect(amount,s)
     for j in range(amount):
-        th=MyThread(func=trans1,args=clients[j][0])
+        th=MyThread(func=trans1,args=[clients[j][0]])
         t1.append(th)
         t1[j].start()
     for k in range(amount):
