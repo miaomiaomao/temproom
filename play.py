@@ -6,7 +6,7 @@ def play(username):
     CHUNK = 1024
     try:
     	wf = wave.open(username+'.wav', 'rb')
-    else:
+    except:
     	return 0
     p = pyaudio.PyAudio()
 

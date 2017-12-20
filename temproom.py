@@ -5,7 +5,7 @@
 file: main.py
 """
 from PyQt5.QtWidgets import (QApplication, QComboBox, QDialog,
-        QDialogButtonBox, QGridLayout, QGroupBox, QHBoxLayout,
+        QCheckBox, QGridLayout, QGroupBox, QHBoxLayout,
         QLabel, QMenu, QMenuBar, QPushButton,QVBoxLayout, QDesktopWidget,QMessageBox)
 from PyQt5 import QtCore,QtGui
 import sys,time
@@ -31,6 +31,7 @@ class Dialog(QDialog):
         self.l4 = QLabel(str(roomnumber))
         self.b1 = QPushButton('连接服务器')
         self.b2 = QPushButton('下线')
+        #self.cb1= QCheckBox("HHH")
 
         self.setFont(self.font)
         self.l1.setFont(self.font)
@@ -85,6 +86,8 @@ class Dialog(QDialog):
         layout.addWidget(self.formGroupBox,2,0,5,2)
         layout.addWidget(self.b1,7,0,1,1)
         layout.addWidget(self.b2,7,1,1,1)
+        #layout.addWidget(self.cb1, 8, 0, 1, 1)
+
 
         self.setLayout(layout)
         self.setWindowTitle('Temproom')
