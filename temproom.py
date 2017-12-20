@@ -5,8 +5,8 @@
 file: main.py
 """
 from PyQt5.QtWidgets import (QApplication, QComboBox, QDialog,
-        QDialogButtonBox, QFormLayout, QGridLayout, QGroupBox, QHBoxLayout,
-        QLabel, QLineEdit, QMenu, QMenuBar, QPushButton,QVBoxLayout, QDesktopWidget,QMessageBox)
+        QDialogButtonBox, QGridLayout, QGroupBox, QHBoxLayout,
+        QLabel, QMenu, QMenuBar, QPushButton,QVBoxLayout, QDesktopWidget,QMessageBox)
 from PyQt5 import QtCore,QtGui
 import sys,time
 import send,record,play,threading
@@ -66,21 +66,9 @@ class Dialog(QDialog):
         layout.addStretch()
         self.formGroupBox.setLayout(layout)
 
+        v_box = QVBoxLayout()  # 垂直布局
 
-
-
-        #
-        # self.createFormGroupBox()
-
-        v_box = QVBoxLayout()
-
-
-        layout = QGridLayout()
-        # layout.addWidget(self.l1,0,0)
-        # layout.addWidget(self.l3,0,1)
-        # layout.addWidget(self.l2,1,0)
-        # layout.addWidget(self.l4,1,1)
-
+        layout = QGridLayout()  # 总体表格布局
 
         h_box1 = QHBoxLayout()
         h_box2 = QHBoxLayout()
@@ -94,11 +82,9 @@ class Dialog(QDialog):
         v_box.addLayout(h_box2)
 
         layout.addLayout(v_box,0,0,1,1)
-        # self.formGroupBox = QGroupBox("房间内用户")
         layout.addWidget(self.formGroupBox,2,0,5,2)
         layout.addWidget(self.b1,7,0,1,1)
         layout.addWidget(self.b2,7,1,1,1)
-        # layout.addWidget(self.user,2,0,0,2)
 
         self.setLayout(layout)
         self.setWindowTitle('Temproom')
@@ -106,8 +92,6 @@ class Dialog(QDialog):
         self.resize(250,600)
         self.center()
 
-        # self.b1.clicked.connect(self.btn1_clk)
-        # self.b2.clicked.connect(self.btn2_clk)
         try:
             self.t=threading.Thread(target=self.refresh)
             self.t.start()
@@ -123,10 +107,7 @@ class Dialog(QDialog):
 
 
             if a.exec() == 1024:
-                # cur, conn = DataBaseRelated.ini()
-                # DataBaseRelated.useroffline(self.username, self.roomnumber, cur, conn)
-                # DataBaseRelated.roomoffline(self.roomnumber, cur, conn)
-                # conn.close()
+
                 self.close()
 
 
@@ -202,38 +183,7 @@ class Dialog(QDialog):
                     self.userlist.append(result[i][2])
                     self.user[i].setText(str(self.userlist[i]))
                 self.update()
-                #     self.use = QLabel(str(self.userlist[i]))
-                #     self.user.append(self.use)
-                # layout = QVBoxLayout()
-                # for i in range(self.number):
-                #     layout.addWidget(self.user[i])
-                # layout.addStretch()
-                #
-                # self.formGroupBox.setLayout(layout)
-                # self.formGroupBox.update()
-                #
-                # v_box = QVBoxLayout()
-                #
-                # layout = QGridLayout()
-                #
-                # h_box1 = QHBoxLayout()
-                # h_box2 = QHBoxLayout()
-                #
-                # h_box1.addWidget(self.l1)
-                # h_box1.addWidget(self.l3)
-                # v_box.addLayout(h_box1)
-                #
-                # h_box2.addWidget(self.l2)
-                # h_box2.addWidget(self.l4)
-                # v_box.addLayout(h_box2)
-                #
-                # layout.addLayout(v_box, 0, 0, 1, 1)
-                # layout.addWidget(self.formGroupBox, 2, 0, 5, 2)
-                # layout.addWidget(self.b1, 7, 0, 1, 1)
-                # layout.addWidget(self.b2, 7, 1, 1, 1)
-                # self.setLayout(layout)
-                # self.update()
-                # self.hide()
+
 
                 # try:
                 #     t=threading.Thread(target=new,args=(self.username, self.roomnumber))
@@ -254,20 +204,6 @@ class Dialog(QDialog):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    # def b2_click(self):
-    #     cur, conn = DataBaseRelated.ini()
-    #     DataBaseRelated.useroffline(self.username, self.roomnumber, cur, conn)
-    #     DataBaseRelated.roomoffline(self.roomnumber, cur, conn)
-    #     conn.close()
-    # def btn1_clk(self):
-    #         pass
-    #
-    # def btn2_clk(self):
-    #         pass
-
-
-    #
-    # def createFormGroupBox(self,):
 
     def flow(self,s):
         while 1:
@@ -279,9 +215,7 @@ class Dialog(QDialog):
                     t = threading.Thread(target=play.play,args=i)
                     t.start()
 
-# def new(username,roomnumber):
-#     new_window = Dialog(username, roomnumber)
-#     new_window.show()
+
 
 
 if __name__ == '__main__':
