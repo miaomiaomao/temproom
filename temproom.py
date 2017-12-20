@@ -114,8 +114,20 @@ class Dialog(QDialog):
 
 
     def connect(self):
+        try:
+            so =send.client_connect()
+        except:
+            a = QMessageBox(self)
+            a.setFont(self.font)
+            a.setText("程序异常，请退出")
+            a.setWindowModality(QtCore.Qt.WindowModal)
 
-        so =send.client_connect()
+            a.setIcon(QMessageBox.NoIcon)
+            a.setDefaultButton(QMessageBox.Yes)
+
+            if a.exec() == 1024:
+                self.close()
+
         t = threading.Thread(target=self.flow,args=so)
         t.start()
 
