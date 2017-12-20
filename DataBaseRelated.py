@@ -6,7 +6,7 @@ Created on Sat Dec  2 18:41:35 2017
 """
 
 import pymysql
-import random
+#
 
 
 def ini():
@@ -24,6 +24,15 @@ def search_username(username,cur):
         cur.execute(sql)
         return cur.rowcount
 
+def search_userstatus(username,cur):
+        # username = input('请输入用户名:')
+        # if len(username)>30:
+        #     print('用户名过长，请重新输入！')
+        #     continue
+        sql = "select * from Users where username = '" + username + "'"
+        cur.execute(sql)
+        results = cur.fetchall()
+        return results[0][2]
 
 
 
@@ -86,7 +95,15 @@ def return_roomnumberlist(cur):
 
     return numberlist
 
+def return_useramountlist(cur):
+    sql = "select * from Rooms "
+    cur.execute(sql)
+    results = cur.fetchall()
+    numberlist=[]
+    for i in range(cur.rowcount):
+        numberlist.append(results[i][2])
 
+    return numberlist
 
 def numberofrooms(cur):
     sql = "select * from Rooms "
@@ -144,7 +161,10 @@ def curretroomusernumber(roomnumber,cur):
     sql = "select * from Rooms where roomnumber = '%d'"
     cur.execute(sql% roomnumber)
     results=cur.fetchall()
-    return results[0][2]
+    if cur.rowcount==0:
+        return 0
+    else:
+        return results[0][2]
 
 
 def getinroom(username,roomnumber,keyintoroom,cur,conn):
@@ -238,7 +258,8 @@ if __name__=='__main__':
     #newroom(16,2,'hechao',cur,conn)
     #print(search_room(121,cur))
     #getinroom('anyone4',15,2,cur,conn)
-    useroffline('anyone',1333,cur,conn)
+    useroffline('test1',3333,cur,conn)
+    #print(curretroomusernumber(2222, cur))
     #roomoffline(16,cur,conn)
     #search_room(15,cur)
     conn.close()

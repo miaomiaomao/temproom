@@ -4,8 +4,10 @@ import wave
 
 def play(username):
     CHUNK = 1024
-    wf = wave.open(username+'.wav', 'rb')
-
+    try:
+    	wf = wave.open(username+'.wav', 'rb')
+    except:
+    	return 0
     p = pyaudio.PyAudio()
 
     stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
