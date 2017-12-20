@@ -36,14 +36,14 @@ def server_connect(client_number):
     except socket.error as msg:
         print(msg)
         sys.exit(1)
-    print('listening')
+
 
 
     for i in range(client_number):
         print('连接中....')
         conn,addr=so.accept()
         clients.append((conn,addr))
-        print("连接成功 "+addr)
+        print("连接成功 "+str(addr))
     return clients
     #     self._result = result
     #
