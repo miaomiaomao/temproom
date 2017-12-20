@@ -9,6 +9,7 @@ socket client
 import socket
 import os
 import sys
+import struct
 
 
 
@@ -30,13 +31,11 @@ def send(s,username):
     if os.path.isfile(filepath):
         # 定义定义文件信息。
         fileinfo_size = os.path.getsize(filepath)
-        info = str(fileinfo_size)+' '+str(username)
-        print(info)
-        # 定义文件头信息，包含文件名和文件大小
-        #fhead = struct.pack('128sl', os.path.basename(filepath),os.stat(filepath).st_size)
-        s.send(info.encode())
+        length=len(username)
+        info=struct.pack('ii10s',fileinfo_size,length,bytes(username,'utf-8'))
 
-        # s.send(str(username).encode())
+
+        s.send(info)
 
         print('sending to server')
 
@@ -51,16 +50,12 @@ def send(s,username):
 
 
 def recv(s):
-    while 1:
-        info = s.recv(1024).decode()
-        print(info)
-        sp=info.find(' ')
-        username = info[sp+1:len(info)]
-        try:
-            filesize = int(info[0:sp])
-            break
-        except:
-            pass
+
+    info = s.recv(18)
+    filesize,length=struct.unpack('ii',info[0:8])
+    username = (struct.unpack('{length}s'.format(length=length), info[8:8 + length])[0]).decode()
+    # sp=info.find(' ')
+    # username = info[sp+1:len(info)]
 
     if filesize:
         #print('filesize is {0}'.format(buf))
@@ -82,6 +77,12 @@ def recv(s):
 
 
 
-
+#
 # if __name__ == '__main__':
 #     # socket_client()
+#
+#     info = struct.pack('ii10s', 1231231,9,bytes('ddededdde','utf-8'))
+#     print(struct.calcsize('ii10s'))
+#     fileinfo_size, length = struct.unpack('ii', info[0:8])
+#     username = (struct.unpack('{length}s'.format(length=length), info[8:8 + length])[0]).decode()
+#     print(username)

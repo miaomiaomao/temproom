@@ -8,10 +8,9 @@ socket service
 
 
 import socket
-import time
 import sys
 import os
-import DataBase_server
+import struct
 
 
 # def server_ini(client_number):
@@ -72,13 +71,22 @@ def send(conn,username):
 
     if os.path.isfile(filepath):
 
-        # 定义定义文件信息。
+        # # 定义定义文件信息。
+        # fileinfo_size = os.path.getsize(filepath)
+        #
+        # info=str(fileinfo_size)+' '+str(username)
+        # # 定义文件头信息，包含文件名和文件大小
+        # #fhead = struct.pack('128sl', os.path.basename(filepath),os.stat(filepath).st_size)
+        # conn.send(info.encode())
         fileinfo_size = os.path.getsize(filepath)
+        length = len(username)
 
-        info=str(fileinfo_size)+' '+str(username)
+        # info = str(fileinfo_size)+' '+str(username)
+        # print(info)
+        info = struct.pack('ii10s', fileinfo_size, length, bytes(username, 'utf-8'))
         # 定义文件头信息，包含文件名和文件大小
-        #fhead = struct.pack('128sl', os.path.basename(filepath),os.stat(filepath).st_size)
-        conn.send(info.encode())
+        # fhead = struct.pack('128sl', os.path.basename(filepath),os.stat(filepath).st_size)
+        conn.send(info)
 
 
         fp = open(filepath, 'rb')
@@ -104,11 +112,15 @@ def recv(conn):
 
 #   while 1:
     #fileinfo_size = struct.calcsize('128sl')
-    info = conn.recv(1024).decode()
-    sp=info.find(' ')
-
-    username = info[sp+1:len(info)]
-    filesize = int(info[0:sp])
+    # info = conn.recv(1024).decode()
+    # sp=info.find(' ')
+    #
+    # username = info[sp+1:len(info)]
+    # filesize = int(info[0:sp])
+    info = conn.recv(18)
+    filesize, length = struct.unpack('ii', info[0:8])
+    username = (struct.unpack('{length}s'.format(length=length), info[8:8 + length])[0]).decode()
+    
     if filesize:
         #print ('filesize is {0}'.format(buf))
         recvd_size = 0  # 定义已接收文件的大小
