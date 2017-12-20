@@ -42,6 +42,7 @@ def server_connect(client_number):
     for i in range(client_number):
         print('连接中....')
         conn,addr=so.accept()
+        conn.settimeout(500)
         clients.append((conn,addr))
         print("连接成功 "+str(addr))
     return clients
@@ -124,35 +125,6 @@ def recv(conn):
         print ('end receive...')
     return username
 
-
-def ready(roomnumber):
-    cur, conn = DataBase_server.ini()
-    number = DataBase_server.curretroomusernumber(roomnumber, cur)
-    if number >=2:
-        s = server_ini(number)
-        c = server_connect(number,s)
-        return number ,c
-    else:
-        return 0,0
-    # t = threading.Thread(target=c.server_connect, args=(number, s))
-    # t.start()
-    # while t.isAlive():
-    #     pass
-    # conn=c.get_result()
-    # for i in conn:
-    #     t = threading.Thread(target=recv.recv, args=i)
-    #     t.start()
-def work(c):
-    # for i in c:
-    #     t = threading.Thread(target=recv, args=i)
-    #     t.start()
-    user=[]
-    while  1:
-        for i in c:
-            user.append=recv(i)
-            for j in c:
-                if j!=i:
-                    send(c,user[i])
 
 
 # if __name__ == '__main__':

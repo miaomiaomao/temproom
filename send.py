@@ -50,12 +50,17 @@ def send(s,username):
 
 
 def recv(s):
-    info = s.recv(1024).decode()
-    print(info)
-    sp=info.find(' ')
+    while 1:
+        info = s.recv(1024).decode()
+        print(info)
+        sp=info.find(' ')
+        username = info[sp+1:len(info)]
+        try:
+            filesize = int(info[0:sp])
+            break
+        except:
+            pass
 
-    username = info[sp+1:len(info)]
-    filesize = int(info[0:sp])
     if filesize:
         #print('filesize is {0}'.format(buf))
         recvd_size = 0  # 定义已接收文件的大小
