@@ -59,7 +59,7 @@ t1=[]
 t2=[]
 while 1:
     total=check()
-    if not total:
+    if len(total):
         print(total)
         break
 
