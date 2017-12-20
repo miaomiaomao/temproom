@@ -187,6 +187,10 @@ class Dialog(QDialog):
                 self.number = DataBaseRelated.curretroomusernumber(self.roomnumber, cur)
                 del self.userlist[:]
                 # del self.user[:]
+
+                if self.closesignal == 1:
+                    break
+
                 result = DataBaseRelated.curretroomusers(self.roomnumber, cur)
                 conn2.close()
                 for i in range(10):
@@ -196,6 +200,7 @@ class Dialog(QDialog):
                 for i in range(self.number):
                     self.userlist.append(result[i][2])
                     self.user[i].setText(str(self.userlist[i]))
+
                 self.update()
 
             conn.close()

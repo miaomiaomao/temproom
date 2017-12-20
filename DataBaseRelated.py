@@ -161,7 +161,10 @@ def curretroomusernumber(roomnumber,cur):
     sql = "select * from Rooms where roomnumber = '%d'"
     cur.execute(sql% roomnumber)
     results=cur.fetchall()
-    return results[0][2]
+    if cur.rowcount==0:
+        return 0
+    else:
+        return results[0][2]
 
 
 def getinroom(username,roomnumber,keyintoroom,cur,conn):
