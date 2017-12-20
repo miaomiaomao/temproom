@@ -174,6 +174,8 @@ class Dialog(QDialog):
     def refresh(self):
 
         while 1:
+            if self.closesignal == 1:
+                break
             time.sleep(1)
             #print(self.number)
 
