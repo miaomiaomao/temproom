@@ -120,7 +120,7 @@ def recv(conn):
     info = conn.recv(18)
     filesize, length = struct.unpack('ii', info[0:8])
     username = (struct.unpack('{length}s'.format(length=length), info[8:8 + length])[0]).decode()
-    
+
     if filesize:
         #print ('filesize is {0}'.format(buf))
         recvd_size = 0  # 定义已接收文件的大小
