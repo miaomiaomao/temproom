@@ -10,7 +10,7 @@ import pymysql
 
 
 def ini():
-    conn=pymysql.connect(host='120.79.72.9',user='root',passwd='123',db='temproom',unix_socket="/var/run/mysqld/mysqld.sock")
+    conn=pymysql.connect(host='127.0.0.1',user='root',passwd='123',db='temproom')
     cur = conn.cursor()
     return cur,conn
 
@@ -256,7 +256,7 @@ if __name__=='__main__':
     #print(search_room(121,cur))
     #getinroom('anyone4',15,2,cur,conn)
     #useroffline('test3',123456,cur,conn)
-    #print(curretroomusernumber(2222, cur))
+    print(curretroomusernumber(123456, cur))
     #roomoffline(16,cur,conn)
     #search_room(15,cur)
     conn.close()
