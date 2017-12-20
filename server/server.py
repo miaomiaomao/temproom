@@ -55,7 +55,8 @@ def trans2(k,client,t):
 
 
 total=check()
-t=[]
+t1=[]
+t2=[]
 for i in total:
     amount=len(i[0])#TCP问题很大啊感觉
     print(amount)
@@ -63,11 +64,13 @@ for i in total:
     clients=recv.server_connect(amount,s)
     for j in range(amount):
         th=MyThread(target=trans1,args=clients[j][0])
-        t.append(th)
-        t[j].start()
+        t1.append(th)
+        t1[j].start()
     for k in range(amount):
-        th2=threading.thread(target=trans2,args=(k,clients[k][0],t))
-        th2.start()
+        th2=threading.thread(target=trans2,args=(k,clients[k][0],t1))
+        t2.append(th2)
+        t2[k].start()
+        t2[k].join()
 
 
 
