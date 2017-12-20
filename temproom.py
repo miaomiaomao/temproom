@@ -116,6 +116,8 @@ class Dialog(QDialog):
     def connect(self):
         try:
             so =send.client_connect()
+            t = threading.Thread(target=self.flow, args=[so])
+            t.start()
         except:
             a = QMessageBox(self)
             a.setFont(self.font)
@@ -128,8 +130,7 @@ class Dialog(QDialog):
             if a.exec() == 1024:
                 self.close()
 
-        t = threading.Thread(target=self.flow,args=[so])
-        t.start()
+
 
     def closeEvent(self, event):
         a = QMessageBox(self)
