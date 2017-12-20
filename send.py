@@ -30,7 +30,8 @@ def send(s,username):
     if os.path.isfile(filepath):
         # 定义定义文件信息。
         fileinfo_size = os.path.getsize(filepath)
-        info=str(fileinfo_size)+' '+str(username)
+        info = str(fileinfo_size)+' '+str(username)
+        print(info)
         # 定义文件头信息，包含文件名和文件大小
         #fhead = struct.pack('128sl', os.path.basename(filepath),os.stat(filepath).st_size)
         s.send(info.encode())

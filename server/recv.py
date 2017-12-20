@@ -69,26 +69,28 @@ def server_connect(client_number):
 
 def send(conn,username):
     filepath = username+'.wav'
-    while 1:
-        if os.path.isfile(filepath):
-            break
+
+    if os.path.isfile(filepath):
+
         # 定义定义文件信息。
-    fileinfo_size = os.path.getsize(filepath)
+        fileinfo_size = os.path.getsize(filepath)
 
-    info=str(fileinfo_size)+' '+str(username)
-    # 定义文件头信息，包含文件名和文件大小
-    #fhead = struct.pack('128sl', os.path.basename(filepath),os.stat(filepath).st_size)
-    conn.send(info.encode())
+        info=str(fileinfo_size)+' '+str(username)
+        # 定义文件头信息，包含文件名和文件大小
+        #fhead = struct.pack('128sl', os.path.basename(filepath),os.stat(filepath).st_size)
+        conn.send(info.encode())
 
 
-    fp = open(filepath, 'rb')
-    print('begin to send to'+username)
-    while 1:
-        data = fp.read(1024)
-        if not data:
-            print('{0} file send over...'.format(filepath))
-            break
-        conn.send(data)
+        fp = open(filepath, 'rb')
+        print('begin to send to'+username)
+        while 1:
+            data = fp.read(1024)
+            if not data:
+                print('{0} file send over...'.format(filepath))
+                break
+            conn.send(data)
+    else:
+        print('没接受到文件')
     # conn.close()
 
 
