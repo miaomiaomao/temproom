@@ -59,8 +59,8 @@ t1=[]
 t2=[]
 while 1:
     total=check()
+    print(total)
     if len(total):
-        print(total)
         break
 
 for i in total:
