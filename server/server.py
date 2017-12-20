@@ -13,7 +13,7 @@ import recv
 
 class MyThread(threading.Thread):
 
-    def __init__(self,func,args=()):
+    def __init__(self,func,*args):
         super(MyThread,self).__init__()
         self.func = func
         self.args = args

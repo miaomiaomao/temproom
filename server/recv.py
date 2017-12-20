@@ -37,7 +37,7 @@ def server_connect(client_number, s):
         conn,addr=s[i].accept()
         clients.append((conn,addr))
         print("连接成功")
-        return clients
+    return clients
     #     self._result = result
     #
     # def get_result(self):
@@ -74,6 +74,7 @@ def send(conn,username):
 
 
     fp = open(filepath, 'rb')
+    print('begin to send to'+username)
     while 1:
         data = fp.read(1024)
         if not data:
@@ -102,7 +103,7 @@ def recv(conn):
         #print ('filesize is {0}'.format(buf))
         recvd_size = 0  # 定义已接收文件的大小
         fp = open(username+'.wav', 'wb')
-        print ('start receiving...')
+        print ('start receiving from..'+username)
 
         while not recvd_size == filesize:
             if filesize - recvd_size > 1024:
@@ -113,7 +114,7 @@ def recv(conn):
                 recvd_size = filesize
             fp.write(data)
         fp.close()
-        print ('end receive...,begin to transmit')
+        print ('end receive...')
     return username
 
 
