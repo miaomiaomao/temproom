@@ -66,8 +66,7 @@ while 1:
 for i in total:
     amount=len(i[0])#TCP问题很大啊感觉
     print(amount)
-    s=recv.server_ini(amount)
-    clients=recv.server_connect(amount,s)
+    clients=recv.server_connect(amount)
     for j in range(amount):
         th=MyThread(func=trans1,args=[clients[j][0]])
         t1.append(th)
