@@ -11,7 +11,7 @@ import socket
 import time
 import sys
 import os
-import DataBaseRelated,threading
+import DataBase_server
 
 
 def server_ini(client_number):
@@ -118,8 +118,8 @@ def recv(conn):
 
 
 def ready(roomnumber):
-    cur, conn = DataBaseRelated.ini()
-    number = DataBaseRelated.curretroomusernumber(roomnumber, cur)
+    cur, conn = DataBase_server.ini()
+    number = DataBase_server.curretroomusernumber(roomnumber, cur)
     if number >=2:
         s = server_ini(number)
         c = server_connect(number,s)
