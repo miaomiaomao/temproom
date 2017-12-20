@@ -198,16 +198,16 @@ class Dialog(QDialog):
 
 
     def flow(self,s):
-        while 1:
-            record.record(self.username)
-            send.send(s, self.username)
-            for i in self.userlist:
-                if self.username != i:
-                    send.recv(s)
-                    t = threading.Thread(target=play.play,args=i)
-                    t.start()
-            if self.closesignal==1:
-                break
+        # while 1:
+        record.record(self.username)
+        send.send(s, self.username)
+        for i in self.userlist:
+            if self.username != i:
+                send.recv(s)
+                t = threading.Thread(target=play.play,args=i)
+                t.start()
+        # if self.closesignal==1:
+        #     break
 
 
 
