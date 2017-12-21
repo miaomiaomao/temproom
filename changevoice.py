@@ -9,8 +9,11 @@ global voicechange
 sounddegree=50    #(-20~20）音量初始化为50
 noise_filter=0   #最开始不滤波
 voicechange=0   #最开始不变声
+flag=0
+username=0
 receive_video='yuanshi.wav'
 x = Signal(receive_video)
+
 
 
 #音量大小调节模块
@@ -47,6 +50,30 @@ elif voicechange==2:
 
 receive_video='denoise.wav'
 winsound.PlaySound(receive_video, winsound.SND_ALIAS)
+
+try:
+    receive_video=username+'.wav'
+    x = Signal(receive_video)
+except:
+    flag=0
+    #return 0
+
+if flag==1:
+    x.changenansheng();
+    x.write(username+'.wav')
+elif flag==2:
+    x.changetongsheng();
+    x.write(username+'.wav')
+elif flag==3:
+    x.banddenoise();
+    x.write(username+'.wav')
+
+
+
+
+
+
+
 '''
 noise = Signal('noise.wav')
 x.noise_removal(noise)
