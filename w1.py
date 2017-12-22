@@ -11,6 +11,11 @@ import qdarkstyle
 from PyQt5 import QtCore,QtGui
 import DataBaseRelated,w2
 
+def check_contain_chinese(check_str):
+    for ch in check_str:
+        if u'\u4e00' <= ch <= u'\u9fff':
+            return True
+    return False
 
 class Window(QWidget):
     font = QtGui.QFont("Times", 12, QtGui.QFont.Bold)
@@ -104,6 +109,19 @@ class Window(QWidget):
     def btn1_clk(self):
         username=str(self.le1.text())
         password=str(self.le2.text())
+        
+        if check_contain_chinese(username) or check_contain_chinese(password):
+            a = QMessageBox(self)
+            a.setFont(self.font)
+            a.setText("用户名和密码不可包含中文！")
+            a.setWindowModality(QtCore.Qt.WindowModal)
+
+            a.setIcon(QMessageBox.NoIcon)
+            a.setDefaultButton(QMessageBox.Yes)
+            
+            if a.exec() == 1024:
+                return 0
+            
         try:
             cur,conn=DataBaseRelated.ini()
         except:
@@ -185,6 +203,19 @@ class Window(QWidget):
     def btn2_clk(self):
         username = str(self.le1.text())
         password = str(self.le2.text())
+        
+        if check_contain_chinese(username) or check_contain_chinese(password):
+            a = QMessageBox(self)
+            a.setFont(self.font)
+            a.setText("用户名和密码不可包含中文！")
+            a.setWindowModality(QtCore.Qt.WindowModal)
+
+            a.setIcon(QMessageBox.NoIcon)
+            a.setDefaultButton(QMessageBox.Yes)
+            
+            if a.exec() == 1024:
+                return 0
+            
         if len(username)<4 or len(password)<4:
             a = QMessageBox(self)
             a.setFont(self.font)
