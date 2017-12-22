@@ -21,7 +21,7 @@ class Dialog(QDialog):
     username=''
     closesignal=0
     font = QtGui.QFont("Arial", 12, QtGui.QFont.Bold)
-
+    flag=0;
     def __init__(self,username,roomnumber):
         super(Dialog, self).__init__()
         self.setWindowIcon(QtGui.QIcon('1.png'))
@@ -31,6 +31,10 @@ class Dialog(QDialog):
         self.l4 = QLabel(str(roomnumber))
         self.b1 = QPushButton('连接服务器')
         self.b2 = QPushButton('下线')
+        self.cb1 = QCheckBox("童声")
+        self.cb2 = QCheckBox("男声")
+        self.cb3 = QCheckBox("降噪")
+
         #self.cb1= QCheckBox("HHH")
 
         self.setFont(self.font)
@@ -38,10 +42,16 @@ class Dialog(QDialog):
         self.l2.setFont(self.font)
         self.b1.setFont(self.font)
         self.b2.setFont(self.font)
+        self.cb1.setFont(self.font)
+        self.cb2.setFont(self.font)
+        self.cb3.setFont(self.font)
 
 
         self.b1.clicked.connect(self.connect)
         self.b2.clicked.connect(self.close)
+        self.cb1.stateChanged.connect(self.changecb1)
+        self.cb2.stateChanged.connect(self.changecb2)
+        self.cb3.stateChanged.connect(self.changecb3)
         self.username=username
         self.roomnumber=roomnumber
         # 调整显示内容
@@ -83,9 +93,12 @@ class Dialog(QDialog):
         v_box.addLayout(h_box2)
 
         layout.addLayout(v_box,0,0,1,1)
-        layout.addWidget(self.formGroupBox,2,0,5,2)
+        layout.addWidget(self.formGroupBox,2,0,5,3)
         layout.addWidget(self.b1,7,0,1,1)
         layout.addWidget(self.b2,7,1,1,1)
+        layout.addWidget(self.cb1,8,0,1,1)
+        layout.addWidget(self.cb2,8,1,1,1)
+        layout.addWidget(self.cb3,8,2,1,1)
         #layout.addWidget(self.cb1, 8, 0, 1, 1)
 
 
@@ -112,7 +125,20 @@ class Dialog(QDialog):
             if a.exec() == 1024:
 
                 self.close()
+    def changecb1(self):
+        self.flag=1
+        if self.cb2.isChecked():
+            self.cb2.setCheckState(Qt.Unchecked)
 
+    def changecb2(self):
+        self.flag=2
+        if self.cb1.isChecked():
+            self.cb1.setCheckState(Qt.Unchecked)
+           #self.cb1.setChecked(false)
+
+
+    def changecb3(self):
+        self.flag=3
 
 
 
