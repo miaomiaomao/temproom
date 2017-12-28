@@ -46,7 +46,6 @@ def send(s,username):
                 print ('send over...')
                 break
             s.send(data)
-    # s.close()
 
 
 def recv(s):
@@ -75,14 +74,3 @@ def recv(s):
         print('done，接受到'+username)
         fp.close()
 
-
-
-#
-# if __name__ == '__main__':
-#     # socket_client()
-#
-#     info = struct.pack('ii10s', 1231231,9,bytes('ddededdde','utf-8'))
-#     print(struct.calcsize('ii10s'))
-#     fileinfo_size, length = struct.unpack('ii', info[0:8])
-#     username = (struct.unpack('{length}s'.format(length=length), info[8:8 + length])[0]).decode()
-#     print(username)

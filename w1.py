@@ -120,7 +120,8 @@ class Window(QWidget):
             a.setDefaultButton(QMessageBox.Yes)
             
             if a.exec() == 1024:
-                return 0
+                self.le1.clear()
+                self.le2.clear()
             
         try:
             cur,conn=DataBaseRelated.ini()

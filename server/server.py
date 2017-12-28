@@ -73,17 +73,23 @@ def trans3():
         for j in range(amount):
             try:
                 th=MyThread(func=trans1,args=[clients[j][0]])
+                th.start()
             except:
                 return 1
-            t1.append(th)
-            t1[j].start()
+            if len(t1)<j+1:
+                t1.append(th)
+            else:
+                t1[j]=th
         for k in range(amount):
             try:
                 th2=threading.Thread(target=trans2,args=(k,clients[k][0],t1))
+                th2.start()
             except:
                 return 1
-            t2.append(th2)
-            t2[k].start()
+            if len(t2)<k+1:
+                t2.append(th2)
+            else:
+                t2[k]=th2
             t2[k].join()
 
 if __name__=='__main__':

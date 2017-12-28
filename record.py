@@ -4,8 +4,8 @@ def record(username):
     CHUNK = 1024
     FORMAT = pyaudio.paInt16
     CHANNELS = 2
-    RATE = 44100
-    RECORD_SECONDS = 0.5
+    RATE = 22050
+    RECORD_SECONDS = 5
     WAVE_OUTPUT_FILENAME = username+'.wav'
 
     p = pyaudio.PyAudio()
@@ -36,3 +36,6 @@ def record(username):
     wf.setframerate(RATE)
     wf.writeframes(b''.join(frames))
     wf.close()
+
+if __name__=='__main__':
+    record('hechao')
