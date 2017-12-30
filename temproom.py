@@ -191,17 +191,6 @@ class Dialog(QDialog):
         elif result == 1:
             event.ignore()
 
-        # reply = QMessageBox.question(self, '确认', 'You sure to quit?',
-        #                              QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        #
-        # if reply == QMessageBox.Yes:
-        #     event.accept()
-        #     cur, conn = DataBaseRelated.ini()
-        #     DataBaseRelated.useroffline(self.username, self.roomnumber, cur, conn)
-        #     DataBaseRelated.roomoffline(self.roomnumber, cur, conn)
-        #     conn.close()
-        # else:
-        #     event.ignore()
 
     def refresh(self):
 
