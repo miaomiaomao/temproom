@@ -112,6 +112,3 @@ class Visualization(object):
             # img_png = ImageTk.PhotoImage(img_open)
             # label_img = Tkinter.Label(root, image=img_png)
             # label_img.pack()
-
-
-        # p.get_device_count()

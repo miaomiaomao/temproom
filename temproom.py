@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import (QApplication, QComboBox, QDialog,
         QLabel, QMenu, QMenuBar, QPushButton,QVBoxLayout, QDesktopWidget,QMessageBox)
 from PyQt5 import QtCore,QtGui
 import sys,time
+from PyQt5.QtCore import Qt
 import send,record,play,threading
 import DataBaseRelated
 import qdarkstyle
@@ -103,7 +104,6 @@ class Dialog(QDialog):
         layout.addWidget(self.cb1,8,0,1,1)
         layout.addWidget(self.cb2,8,1,1,1)
         layout.addWidget(self.cb3,8,2,1,1)
-        #layout.addWidget(self.cb1, 8, 0, 1, 1)
 
 
         self.setLayout(layout)
@@ -143,30 +143,33 @@ class Dialog(QDialog):
 
     def changecb3(self):
         self.flag=3
-'''
-#需要import的文件
-from mysignal import Signal
-from pydub import AudioSegment
-import winsound
-import wave
-import os
-#输入的wav文件
-  receive_video=username+'.wav'
-  x = Signal(receive_video)
-#变声的代码,判断标志位获得不同的效果
-if flag==1:#低沉
-    x.changenansheng();
-    x.write(username+'.wav')
-elif flag==2:#高昂
-    x.changetongsheng();
-    x.write(username+'.wav')
-elif flag==3:#降噪
-    noise=noise = Signal('noise.wav')
-    x.noise_removal(noise)
-    x.write(username+'.wav')
-receive_video=username+'.wav'
-winsound.PlaySound(receive_video, winsound.SND_ALIAS)
-'''
+
+    '''
+    #需要import的文件
+    from mysignal import Signal
+    from pydub import AudioSegment
+    import winsound
+    import wave
+    import os
+    #输入的wav文件
+      receive_video=username+'.wav'
+      x = Signal(receive_video)
+    #变声的代码,判断标志位获得不同的效果
+    if flag==1:#低沉
+        x.changenansheng();
+        x.write(username+'.wav')
+    elif flag==2:#高昂
+        x.changetongsheng();
+        x.write(username+'.wav')
+    elif flag==3:#降噪
+        noise=noise = Signal('noise.wav')
+        x.noise_removal(noise)
+        x.write(username+'.wav')
+    receive_video=username+'.wav'
+    winsound.PlaySound(receive_video, winsound.SND_ALIAS)
+    '''
+
+
     def test(self):
         v = Visualization()
 
