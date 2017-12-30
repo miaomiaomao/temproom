@@ -195,35 +195,41 @@ def getinroom(username,roomnumber,keyintoroom,cur,conn):
             return 1
     else:
         return 2
+def isin(username,roomnumber,cur,conn):
+    sql = "select * from room%s" % str(roomnumber) + " where username='%s' " % username
+
+    cur.execute(sql)
+    return cur.rowcount
 
 def useroffline(username,roomnumber, cur, conn):
     if search_room(roomnumber,cur)==1:
         results=cur.fetchall()
-        if results[0][2]>0:
-            sql = """update Rooms
-	        set numberofusers = numberofusers-1
-	        where roomnumber = %d"""
-            cur.execute(sql % (int(roomnumber)))
+        if isin(username,roomnumber, cur, conn)==1:
+            if results[0][2]>0:
+                sql = """update Rooms
+                set numberofusers = numberofusers-1
+                where roomnumber = %d"""
+                cur.execute(sql % (int(roomnumber)))
+                conn.commit()
+            else:
+                sql = """update Rooms
+                set numberofusers = 0
+                where roomnumber = %d"""
+                cur.execute(sql % (int(roomnumber)))
+                conn.commit()
+
+
+            sql = """update Users
+            set currentroom = %d
+            where username='%s'"""
+            cur.execute(sql % (0, username))
             conn.commit()
-        else:
-            sql = """update Rooms
-            set numberofusers = 0
-            where roomnumber = %d"""
-            cur.execute(sql % (int(roomnumber)))
+
+            sql = "delete from room%s" % str(roomnumber) + " where username='%s' "%username
+            # '" + username + "'"
+            #print(sql)
+            cur.execute(sql)
             conn.commit()
-
-
-        sql = """update Users
-        set currentroom = %d
-        where username='%s'"""
-        cur.execute(sql % (0, username))
-        conn.commit()
-
-        sql = "delete from room%s" % str(roomnumber) + " where username='%s' "%username
-        # '" + username + "'"
-        #print(sql)
-        cur.execute(sql)
-        conn.commit()
 
 
 
@@ -258,7 +264,7 @@ if __name__=='__main__':
     #newroom(16,2,'hechao',cur,conn)
     #print(search_room(121,cur))
     #getinroom('anyone4',15,2,cur,conn)
-    useroffline('test8',123456,cur,conn)
+    useroffline('test7',123456,cur,conn)
     #print(curretroomusernumber(2222, cur))
     #roomoffline(16,cur,conn)
     #search_room(15,cur)
