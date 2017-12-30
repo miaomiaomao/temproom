@@ -2,7 +2,7 @@ from scipy.fftpack import fft,ifft
 from scipy.io.wavfile import read,write
 from scipy.signal import get_window
 import numpy as np
-import Signal
+#import Signal
 #from pdb import set_trace
 
 class Signal:
@@ -24,21 +24,30 @@ class Signal:
         gain = min(1.0,gain)
         self.data = np.array(self.data,dtype=np.float64)*gain
         self.data = np.array(self.data,dtype=self.dtype)
-    def changetongsheng(self):
-        x=self.data
-        fs=self.rate
-        x3=x*2
-        FS=fs/1.3
-        self.rate=FS
-        self.data = np.array(x3,dtype=self.dtype)
-
+        
     def changenansheng(self):
-        x=self.data
+        #x=self.data
         fs=self.rate
-        x3=x*2
-        FS=fs/0.8
+        #x3=x*2
+        FS=int(fs//1.3)
         self.rate=FS
-        self.data = np.array(x3,dtype=self.dtype)
+        #self.data = np.array(x,dtype=self.dtype)
+
+    def changetongsheng(self):
+        #x=self.data
+        fs=self.rate
+        #x3=x*2
+        FS=int(fs//0.8)
+        self.rate=FS
+        #self.data = np.array(x3,dtype=self.dtype)
+
+    def banddenoise(self):#带通滤波器
+        x=self.data
+        b1,a1 = Signal.butter(4,10,'low')
+        sf = Signal.filtfilt(b1,a1,x)
+        b2,a2 = Signal.butter(4,2000,'high')
+        x = Signal.filtfilt(b2,a2,sf)
+        self.data = np.array(x,dtype=self.dtype)
 
     def moving_average_filter(self, N=5):#移动滤波器，设置阈值
         x = self.data
@@ -51,15 +60,6 @@ class Signal:
             cum -= x[i]
             cum += x[(i+N)%len(x)]
         self.data = np.array(y,x.dtype)
-
-    def banddenoise(self):#带通滤波器
-        x=self.data
-        b1,a1 = Signal.butter(4,10,'low')
-        sf = Signal.filtfilt(b1,a1,x)
-        b2,a2 = Signal.butter(4,2000,'high')
-        x = Signal.filtfilt(b2,a2,sf)
-        self.data = np.array(x,dtype=self.dtype)
-
 
     def noise_removal(self,noise):#去除噪声
         fft_size = 256
