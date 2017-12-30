@@ -27,6 +27,7 @@ class Visualization(object):
         ymajorFormatter = FormatStrFormatter('%1.1f')
 
         win = pg.GraphicsWindow(title='麦克风测试')
+        # win.connect(win,  Qt.SIGNAL('triggered()'), win.closeEvent)
         stringaxis = pg.AxisItem(orientation='bottom')
         plot = win.addPlot(axisItems={'bottom': stringaxis}, title='麦克风测试波形')
         label = pg.TextItem()
@@ -37,7 +38,7 @@ class Visualization(object):
         plot.setLabel(axis='bottom', text='time (seconds)')
         plot.setYRange(-5000,5000)
         
-        while(win):
+        while(win.isVisible()):
             CHUNK = 1024
             FORMAT = pyaudio.paInt16
             CHANNELS = 2
