@@ -8,11 +8,12 @@ from PyQt5.QtWidgets import (QApplication, QComboBox, QDialog,
         QCheckBox, QGridLayout, QGroupBox, QHBoxLayout,
         QLabel, QMenu, QMenuBar, QPushButton,QVBoxLayout, QDesktopWidget,QMessageBox)
 from PyQt5 import QtCore,QtGui
-from PyQt5.QtCore import  Qt
 import sys,time
 import send,record,play,threading
 import DataBaseRelated
 import qdarkstyle
+from Visualization import Visualization
+
 
 class Dialog(QDialog):
     number=0
@@ -35,7 +36,7 @@ class Dialog(QDialog):
         self.cb1 = QCheckBox("童声")
         self.cb2 = QCheckBox("男声")
         self.cb3 = QCheckBox("降噪")
-
+        self.t1 = QPushButton("麦克风测试")
         #self.cb1= QCheckBox("HHH")
 
         self.setFont(self.font)
@@ -46,10 +47,11 @@ class Dialog(QDialog):
         self.cb1.setFont(self.font)
         self.cb2.setFont(self.font)
         self.cb3.setFont(self.font)
-
+        self.t1.setFont(self.font)
 
         self.b1.clicked.connect(self.connect)
         self.b2.clicked.connect(self.close)
+        self.t1.clicked.connect(self.test)
         self.cb1.stateChanged.connect(self.changecb1)
         self.cb2.stateChanged.connect(self.changecb2)
         self.cb3.stateChanged.connect(self.changecb3)
@@ -97,6 +99,7 @@ class Dialog(QDialog):
         layout.addWidget(self.formGroupBox,2,0,5,3)
         layout.addWidget(self.b1,7,0,1,1)
         layout.addWidget(self.b2,7,1,1,1)
+        layout.addWidget(self.t1,7,2,1,1)
         layout.addWidget(self.cb1,8,0,1,1)
         layout.addWidget(self.cb2,8,1,1,1)
         layout.addWidget(self.cb3,8,2,1,1)
@@ -141,7 +144,8 @@ class Dialog(QDialog):
     def changecb3(self):
         self.flag=3
 
-
+    def test(self):
+        v = Visualization()
 
     def connect(self):
         try:
@@ -192,6 +196,17 @@ class Dialog(QDialog):
         elif result == 1:
             event.ignore()
 
+        # reply = QMessageBox.question(self, '确认', 'You sure to quit?',
+        #                              QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        #
+        # if reply == QMessageBox.Yes:
+        #     event.accept()
+        #     cur, conn = DataBaseRelated.ini()
+        #     DataBaseRelated.useroffline(self.username, self.roomnumber, cur, conn)
+        #     DataBaseRelated.roomoffline(self.roomnumber, cur, conn)
+        #     conn.close()
+        # else:
+        #     event.ignore()
 
     def refresh(self):
 
@@ -250,29 +265,7 @@ class Dialog(QDialog):
             if self.closesignal==1:
                 s.closesocket()
                 break
-'''
-#需要import的文件
-from mysignal import Signal
-from pydub import AudioSegment
-import winsound
-import wave
-import os
-#输入的wav文件
-  receive_video=username+'.wav'
-  x = Signal(receive_video)
-#变声的代码,判断标志位获得不同的效果
-if flag==1:#低沉
-    x.changenansheng();
-    x.write(username+'.wav')
-elif flag==2:#高昂
-    x.changetongsheng();
-    x.write(username+'.wav')
-elif flag==3:#降噪
-    x.banddenoise();
-    x.write(username+'.wav')
-  receive_video=username+'.wav'
-  winsound.PlaySound(receive_video, winsound.SND_ALIAS)
-'''
+
 
 
 if __name__ == '__main__':
