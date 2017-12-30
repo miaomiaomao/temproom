@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import (QApplication, QComboBox, QDialog,
         QCheckBox, QGridLayout, QGroupBox, QHBoxLayout,
         QLabel, QMenu, QMenuBar, QPushButton,QVBoxLayout, QDesktopWidget,QMessageBox)
 from PyQt5 import QtCore,QtGui
+from PyQt5.QtCore import  Qt
 import sys,time
 import send,record,play,threading
 import DataBaseRelated
