@@ -25,7 +25,7 @@ class Window(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        print("init ui")
+
         self.l1 = QLabel('用户名')
         self.l2 = QLabel('密码')
         self.le1 = QLineEdit()
@@ -292,7 +292,7 @@ class Window(QWidget):
             conn.close()
 
 
-    if __name__=='__main__':
+if __name__=='__main__':
     app = QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon('1.png'))
     a_window = Window()
