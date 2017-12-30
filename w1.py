@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import (QLabel, QCheckBox, QPushButton, QVBoxLayout,QHBoxLa
     QWidget,QLineEdit,QMessageBox,QDesktopWidget,QFormLayout)
 import qdarkstyle
 from PyQt5 import QtCore,QtGui
-import DataBaseRelated,w2,w3
+import DataBaseRelated,w2
 
 def check_contain_chinese(check_str):
     for ch in check_str:
@@ -21,10 +21,11 @@ class Window(QWidget):
     font = QtGui.QFont("Times", 12, QtGui.QFont.Bold)
     def __init__(self):
         super().__init__()
-        self.setWindowIcon(QtGui.QIcon('1.png'))
+        # self.setWindowIcon(QtGui.QIcon('1.png'))
         self.init_ui()
 
     def init_ui(self):
+        print("init ui")
         self.l1 = QLabel('用户名')
         self.l2 = QLabel('密码')
         self.le1 = QLineEdit()
@@ -120,8 +121,7 @@ class Window(QWidget):
             a.setDefaultButton(QMessageBox.Yes)
             
             if a.exec() == 1024:
-                self.le1.clear()
-                self.le2.clear()
+                return 0
             
         try:
             cur,conn=DataBaseRelated.ini()
@@ -202,12 +202,97 @@ class Window(QWidget):
         conn.close()
 
     def btn2_clk(self):
-        #self.hide()
-        self.window2=w3.LoginWindow()
-        self.window2.show()
+        username = str(self.le1.text())
+        password = str(self.le2.text())
+        
+        if check_contain_chinese(username) or check_contain_chinese(password):
+            a = QMessageBox(self)
+            a.setFont(self.font)
+            a.setText("用户名和密码不可包含中文！")
+            a.setWindowModality(QtCore.Qt.WindowModal)
+
+            a.setIcon(QMessageBox.NoIcon)
+            a.setDefaultButton(QMessageBox.Yes)
+            
+            if a.exec() == 1024:
+                return 0
+            
+        if len(username)<4 or len(password)<4:
+            a = QMessageBox(self)
+            a.setFont(self.font)
+            a.setText("用户名和密码须大于四位")
+            a.setWindowModality(QtCore.Qt.WindowModal)
+
+            a.setIcon(QMessageBox.NoIcon)
+            a.setDefaultButton(QMessageBox.Yes)
+
+            if a.exec() == 1024:
+                self.le1.clear()
+                self.le2.clear()
+            # buttonReply = QMessageBox.question(self, 'temproom', "用户名和密码须大于四位", QMessageBox.Yes)
+            # if buttonReply == QMessageBox.Yes:
+            #     self.le1.clear()
+            #     self.le2.clear()
+        else:
+            try:
+                cur, conn = DataBaseRelated.ini()
+            except:
+                a = QMessageBox(self)
+                a.setFont(self.font)
+                a.setText("请检查网络连接")
+                a.setWindowModality(QtCore.Qt.WindowModal)
+
+                a.setIcon(QMessageBox.NoIcon)
+                a.setDefaultButton(QMessageBox.Yes)
+
+                # buttonReply = a.(self, 'temproom', "您已经在线了，请勿重复登录", QMessageBox.Yes)
+
+                if a.exec() == 1024:
+                    return 0
+
+            if not DataBaseRelated.search_username(username,cur):
+                DataBaseRelated.signup(username,password,cur,conn)
+                a = QMessageBox(self)
+                a.setText("注册成功~")
+                a.setFont(self.font)
+                a.setWindowModality(QtCore.Qt.WindowModal)
+
+                a.setIcon(QMessageBox.NoIcon)
+                a.setDefaultButton(QMessageBox.Yes)
+
+                if a.exec() == 1024:
+                    self.hide()
+                    self.window2 = w2.Window(username)
+                    self.window2.show()
+                # buttonReply = QMessageBox.question(self, 'temproom', "注册成功！", QMessageBox.Yes)
+                # if buttonReply == QMessageBox.Yes:
+                #     self.hide()
+                #     self.window2 = w2.Window(username)
+                #     self.window2.show()
+
+            else:
+                a = QMessageBox(self)
+                a.setText("这个用户名被别人用了，换一个吧")
+                a.setFont(self.font)
+                a.setWindowModality(QtCore.Qt.WindowModal)
+
+                a.setIcon(QMessageBox.NoIcon)
+                a.setDefaultButton(QMessageBox.Yes)
+
+                if a.exec() == 1024:
+                    self.le1.clear()
+                    self.le2.clear()
+                #     self.window2 = w2.Window(username)
+                #     self.window2.show()
+                # buttonReply = QMessageBox.question(self, 'temproom', "用户名已被占用，请重新注册", QMessageBox.Yes)
+                # if buttonReply == QMessageBox.Yes:
+                #     self.le1.clear()
+                #     self.le2.clear()
+                #     self.show()
+            conn.close()
 
 
-if __name__=='__main__':
+    if __name__=='__main__':
     app = QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon('1.png'))
     a_window = Window()
