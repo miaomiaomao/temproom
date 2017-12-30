@@ -250,7 +250,29 @@ class Dialog(QDialog):
             if self.closesignal==1:
                 s.closesocket()
                 break
-
+'''
+#需要import的文件
+from mysignal import Signal
+from pydub import AudioSegment
+import winsound
+import wave
+import os
+#输入的wav文件
+  receive_video=username+'.wav'
+  x = Signal(receive_video)
+#变声的代码,判断标志位获得不同的效果
+if flag==1:#低沉
+    x.changenansheng();
+    x.write(username+'.wav')
+elif flag==2:#高昂
+    x.changetongsheng();
+    x.write(username+'.wav')
+elif flag==3:#降噪
+    x.banddenoise();
+    x.write(username+'.wav')
+  receive_video=username+'.wav'
+  winsound.PlaySound(receive_video, winsound.SND_ALIAS)
+'''
 
 
 if __name__ == '__main__':
