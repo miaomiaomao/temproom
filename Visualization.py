@@ -35,6 +35,7 @@ class Visualization(object):
         plot.showGrid(x=True, y=True, alpha=0.5)
         plot.setLabel(axis='left')
         plot.setLabel(axis='bottom', text='time (seconds)')
+        plot.setYRange(-5000,5000)
         
         while(win):
             CHUNK = 1024
