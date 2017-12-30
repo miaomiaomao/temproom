@@ -36,7 +36,7 @@ def check():
 
     for i in range(len(amountlist)):
         if amountlist[i] >=2:
-            time.sleep(0.5)
+            
             users=DataBase_server.curretroomusers(numberlist[i],cur)
             total.append((users,numberlist[i]))
     conn.close()
